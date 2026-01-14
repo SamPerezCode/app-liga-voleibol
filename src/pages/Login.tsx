@@ -104,10 +104,12 @@ const Login = () => {
                 className="h-4 w-4"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.8"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="9" />
-                <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4" />
+                <path d="M9.1 9a3 3 0 1 1 5.8 1c-.7.7-1.9 1.4-1.9 2.8" />
                 <path d="M12 17h.01" />
               </svg>
               ¿Olvido su contrasena?
