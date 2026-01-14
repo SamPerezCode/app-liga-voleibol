@@ -11,7 +11,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-league-soft text-slate-900">
       <Header onMenuClick={() => setMobileOpen(true)} />
       <Sidebar />
       <MobileSidebar
@@ -20,7 +20,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       />
 
       <main className="pt-16 lg:pl-72">
-        <div className="px-4 py-8 sm:px-6 lg:px-8">{children}</div>
+        <div className="px-4 py-8 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
+            {children}
+          </div>
+        </div>
       </main>
     </div>
   );

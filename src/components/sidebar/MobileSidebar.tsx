@@ -28,7 +28,7 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
         onClick={onClose}
         aria-hidden="true"
       />
-      <aside className="absolute left-0 top-0 h-full w-72 bg-slate-950 p-6 shadow-xl">
+      <aside className="absolute left-0 top-0 h-full w-72 bg-gradient-to-b from-league-700 via-league-800 to-league-900 p-6 shadow-xl text-white">
         <div className="mb-6 flex items-center justify-between">
           <div className="text-lg font-semibold text-slate-100">
             Liga Voleibol

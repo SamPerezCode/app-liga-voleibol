@@ -99,19 +99,6 @@ const Login = () => {
               type="button"
               className="mx-auto flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-3 py-1.5 text-xs font-medium text-slate-500 backdrop-blur transition hover:border-league-300 hover:text-league-700"
             >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="9" />
-                <path d="M9.1 9a3 3 0 1 1 5.8 1c-.7.7-1.9 1.4-1.9 2.8" />
-                <path d="M12 17h.01" />
-              </svg>
               ¿Olvido su contrasena?
             </button>
           </div>
