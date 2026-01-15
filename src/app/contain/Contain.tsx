@@ -2,6 +2,7 @@ import type { AppSection } from "../types/layout";
 import Home from "../../pages/Home";
 import SolicitudesPage from "../../features/solicitudes/pages/SolicitudesPage";
 import ClubesPage from "../../features/clubes/components/ClubesPage";
+import DeportistasPage from "../../features/deportistas/pages/DeportistasPage";
 
 type Props = {
   activeSection: AppSection;
@@ -16,6 +17,7 @@ const Contain = ({ activeSection }: Props) => {
     case "Clubes":
       return <ClubesPage />;
     case "Deportistas":
+      return <DeportistasPage />;
     case "Entrenadores":
     case "Campeonatos":
     case "Partidos":

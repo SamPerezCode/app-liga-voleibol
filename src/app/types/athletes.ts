@@ -20,6 +20,9 @@ export type Athlete = {
   club: string;
   category: string;
   photoUrl?: string;
+  status: "aprobado" | "pendiente";
+  payment: "pagado" | "pendiente";
+  registeredAt: string;
 };
 
 export const athleteDetailOrder = [
