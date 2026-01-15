@@ -1,6 +1,7 @@
 import type { AppSection } from "../types/layout";
 import Home from "../../pages/Home";
 import SolicitudesPage from "../../features/solicitudes/pages/SolicitudesPage";
+import ClubesPage from "../../features/clubes/components/ClubesPage";
 
 type Props = {
   activeSection: AppSection;
@@ -12,6 +13,15 @@ const Contain = ({ activeSection }: Props) => {
       return <Home />;
     case "Solicitudes":
       return <SolicitudesPage />;
+    case "Clubes":
+      return <ClubesPage />;
+    case "Deportistas":
+    case "Entrenadores":
+    case "Campeonatos":
+    case "Partidos":
+    case "Documentos":
+    case "Pagos":
+    case "Perfil":
     default:
       return (
         <div className="text-sm text-slate-500">
