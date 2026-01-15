@@ -1,4 +1,5 @@
 import type { Club } from "../types";
+import StatusBadge from "../../../ui/StatusBadge";
 
 type Props = {
   club: Club;
@@ -12,15 +13,6 @@ const ClubCard = ({ club, onClick }: Props) => {
     .map((part) => part[0])
     .join("")
     .toUpperCase();
-
-  const statusClass =
-    club.estado === "aprobado"
-      ? "bg-emerald-100 text-emerald-700"
-      : "bg-amber-100 text-amber-700";
-  const paymentClass =
-    club.pago === "pagado"
-      ? "bg-emerald-100 text-emerald-700"
-      : "bg-rose-100 text-rose-700";
 
   return (
     <button
@@ -56,16 +48,16 @@ const ClubCard = ({ club, onClick }: Props) => {
         </div>
 
         <div className="mt-2 flex flex-wrap gap-2">
-          <span
-            className={`rounded-full px-2 py-0.5 text-xs ${statusClass}`}
-          >
-            {club.estado === "aprobado" ? "Aprobado" : "Pendiente"}
-          </span>
-          <span
-            className={`rounded-full px-2 py-0.5 text-xs ${paymentClass}`}
-          >
-            {club.pago === "pagado" ? "Pagado" : "Sin pago"}
-          </span>
+          <StatusBadge
+            label={
+              club.estado === "aprobado" ? "Aprobado" : "Pendiente"
+            }
+            tone={club.estado === "aprobado" ? "approved" : "pending"}
+          />
+          <StatusBadge
+            label={club.pago === "pagado" ? "Pagado" : "Sin pago"}
+            tone={club.pago === "pagado" ? "paid" : "unpaid"}
+          />
         </div>
       </div>
     </button>

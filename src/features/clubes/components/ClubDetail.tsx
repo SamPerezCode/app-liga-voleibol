@@ -6,10 +6,10 @@ import type {
   ClubDocument,
 } from "../types";
 import Button from "../../../ui/Button";
-import Select from "../../../ui/Select";
 import Table from "../../../ui/Table";
 import type { TableColumn } from "../../../ui/Table";
 import Pagination from "../../../ui/Pagination";
+import StatusBadge from "../../../ui/StatusBadge";
 
 type Props = {
   club: Club;
@@ -23,11 +23,6 @@ const statusBadge = (estado: string) =>
   estado === "aprobado"
     ? "bg-emerald-100 text-emerald-700"
     : "bg-amber-100 text-amber-700";
-
-const paymentBadge = (pago: string) =>
-  pago === "pagado"
-    ? "bg-emerald-100 text-emerald-700"
-    : "bg-rose-100 text-rose-700";
 
 const ClubDetail = ({
   club,
@@ -44,8 +39,7 @@ const ClubDetail = ({
 
   const [athletePage, setAthletePage] = useState(1);
   const [coachPage, setCoachPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-
+  const pageSize = 5;
   const pagedAthletes = useMemo(() => {
     const start = (athletePage - 1) * pageSize;
     return athletes.slice(start, start + pageSize);
@@ -105,20 +99,16 @@ const ClubDetail = ({
       label: "Estado",
       render: (row) => (
         <div className="flex flex-col gap-1">
-          <span
-            className={`rounded-full px-2 py-0.5 text-xs ${statusBadge(
-              row.estado
-            )}`}
-          >
-            {row.estado === "aprobado" ? "Aprobado" : "Pendiente"}
-          </span>
-          <span
-            className={`rounded-full px-2 py-0.5 text-xs ${paymentBadge(
-              row.pago
-            )}`}
-          >
-            {row.pago === "pagado" ? "Pagado" : "Sin pago"}
-          </span>
+          <StatusBadge
+            label={
+              row.estado === "aprobado" ? "Aprobado" : "Pendiente"
+            }
+            tone={row.estado === "aprobado" ? "approved" : "pending"}
+          />
+          <StatusBadge
+            label={row.pago === "pagado" ? "Pagado" : "Sin pago"}
+            tone={row.pago === "pagado" ? "paid" : "unpaid"}
+          />
         </div>
       ),
     },
@@ -249,22 +239,24 @@ const ClubDetail = ({
                 Estado
               </p>
               <div className="mt-1 flex gap-2">
-                <span
-                  className={`rounded-full px-2 py-0.5 text-xs ${statusBadge(
-                    club.estado
-                  )}`}
-                >
-                  {club.estado === "aprobado"
-                    ? "Aprobado"
-                    : "Pendiente"}
-                </span>
-                <span
-                  className={`rounded-full px-2 py-0.5 text-xs ${paymentBadge(
-                    club.pago
-                  )}`}
-                >
-                  {club.pago === "pagado" ? "Pagado" : "Sin pago"}
-                </span>
+                <StatusBadge
+                  label={
+                    club.estado === "aprobado"
+                      ? "Aprobado"
+                      : "Pendiente"
+                  }
+                  tone={
+                    club.estado === "aprobado"
+                      ? "approved"
+                      : "pending"
+                  }
+                />
+                <StatusBadge
+                  label={
+                    club.pago === "pagado" ? "Pagado" : "Sin pago"
+                  }
+                  tone={club.pago === "pagado" ? "paid" : "unpaid"}
+                />
               </div>
             </div>
           </div>
@@ -304,32 +296,20 @@ const ClubDetail = ({
         </button>
         {openSection.athletes && (
           <div className="rounded-xl border border-slate-200 bg-white/70 p-4 space-y-4">
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              Mostrar
-              <div className="w-24">
-                <Select
-                  value={pageSize}
-                  onChange={(event) =>
-                    setPageSize(Number(event.target.value))
-                  }
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                </Select>
-              </div>
-              registros
-            </div>
             <Table columns={athleteColumns} data={pagedAthletes} />
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span>
                 Mostrando {pagedAthletes.length} de {athletes.length}
               </span>
-              <Pagination
-                page={athletePage}
-                pageSize={pageSize}
-                total={athletes.length}
-                onPageChange={setAthletePage}
-              />
+
+              {athletes.length > pageSize && (
+                <Pagination
+                  page={athletePage}
+                  pageSize={pageSize}
+                  total={athletes.length}
+                  onPageChange={setAthletePage}
+                />
+              )}
             </div>
           </div>
         )}
@@ -348,32 +328,20 @@ const ClubDetail = ({
         </button>
         {openSection.coaches && (
           <div className="rounded-xl border border-slate-200 bg-white/70 p-4 space-y-4">
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              Mostrar
-              <div className="w-24">
-                <Select
-                  value={pageSize}
-                  onChange={(event) =>
-                    setPageSize(Number(event.target.value))
-                  }
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                </Select>
-              </div>
-              registros
-            </div>
             <Table columns={coachColumns} data={pagedCoaches} />
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span>
                 Mostrando {pagedCoaches.length} de {coaches.length}
               </span>
-              <Pagination
-                page={coachPage}
-                pageSize={pageSize}
-                total={coaches.length}
-                onPageChange={setCoachPage}
-              />
+
+              {coaches.length > pageSize && (
+                <Pagination
+                  page={coachPage}
+                  pageSize={pageSize}
+                  total={coaches.length}
+                  onPageChange={setCoachPage}
+                />
+              )}
             </div>
           </div>
         )}

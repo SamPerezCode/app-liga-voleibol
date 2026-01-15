@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import Button from "../../../ui/Button";
 import Input from "../../../ui/Input";
 import Select from "../../../ui/Select";
+import Pagination from "../../../ui/Pagination";
 import {
   clubs,
   clubAthletes,
@@ -18,6 +19,29 @@ const ClubesPage = () => {
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("todos");
   const [status, setStatus] = useState("todos");
+  const pageSize = 6;
+  const [page, setPage] = useState(1);
+
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearch(event.target.value);
+    setPage(1);
+  };
+
+  const handleDepartmentChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setDepartment(event.target.value);
+    setPage(1);
+  };
+
+  const handleStatusChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setStatus(event.target.value);
+    setPage(1);
+  };
 
   const departments = useMemo(() => {
     return Array.from(
@@ -40,6 +64,11 @@ const ClubesPage = () => {
       return matchesSearch && matchesDept && matchesStatus;
     });
   }, [search, department, status]);
+
+  const pagedClubs = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredClubs.slice(start, start + pageSize);
+  }, [filteredClubs, page]);
 
   if (selectedClubId) {
     const club = clubs.find((item) => item.id === selectedClubId);
@@ -72,11 +101,11 @@ const ClubesPage = () => {
           <Input
             placeholder="Nombre"
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={handleSearchChange}
           />
           <Select
             value={department}
-            onChange={(event) => setDepartment(event.target.value)}
+            onChange={handleDepartmentChange}
           >
             <option value="todos">Departamento</option>
             {departments.map((dept) => (
@@ -85,10 +114,7 @@ const ClubesPage = () => {
               </option>
             ))}
           </Select>
-          <Select
-            value={status}
-            onChange={(event) => setStatus(event.target.value)}
-          >
+          <Select value={status} onChange={handleStatusChange}>
             <option value="todos">Estado</option>
             <option value="aprobado">Aprobado</option>
             <option value="pendiente">Pendiente</option>
@@ -99,6 +125,7 @@ const ClubesPage = () => {
               setSearch("");
               setDepartment("todos");
               setStatus("todos");
+              setPage(1);
             }}
           >
             Restablecer
@@ -107,7 +134,7 @@ const ClubesPage = () => {
       </header>
 
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {filteredClubs.map((club) => (
+        {pagedClubs.map((club) => (
           <ClubCard
             key={club.id}
             club={club}
@@ -115,6 +142,17 @@ const ClubesPage = () => {
           />
         ))}
       </div>
+
+      {filteredClubs.length > pageSize && (
+        <div className="flex justify-end">
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            total={filteredClubs.length}
+            onPageChange={setPage}
+          />
+        </div>
+      )}
     </section>
   );
 };
