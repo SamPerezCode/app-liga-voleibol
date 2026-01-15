@@ -1,0 +1,62 @@
+import { useState } from "react";
+import Header from "../components/header/Header";
+import Sidebar from "../components/sidebar/Sidebar";
+import MobileSidebar from "../components/sidebar/MobileSidebar";
+import Contain from "./contain/Contain";
+import type { AppSection } from "./types/layout";
+import { users } from "./mocks/users";
+
+const AppShell = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] =
+    useState<AppSection>("Inicio");
+
+  const currentUser = users.find((u) => u.role === "admin")!;
+
+  return (
+    <div className="min-h-screen bg-league-soft text-slate-900">
+      <Sidebar
+        open={sidebarOpen}
+        onToggle={() => setSidebarOpen((v) => !v)}
+        activeItem={activeSection}
+        onSelect={setActiveSection}
+      />
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 hidden lg:block bg-transparent"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <MobileSidebar
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        activeItem={activeSection}
+        onSelect={(item) => {
+          setActiveSection(item as AppSection);
+          setMobileOpen(false);
+        }}
+      />
+
+      <main
+        className={`${
+          sidebarOpen ? "lg:pl-72" : "lg:pl-16"
+        } min-h-screen`}
+      >
+        <div className="px-4 py-4 sm:px-6 lg:px-8">
+          <Header
+            onMenuClick={() => setMobileOpen(true)}
+            user={currentUser}
+          />{" "}
+          <div className="mt-4 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
+            <Contain activeSection={activeSection} />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default AppShell;
