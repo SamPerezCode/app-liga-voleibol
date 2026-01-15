@@ -56,13 +56,10 @@ const ClubDetail = ({
       key: "estado",
       label: "Estado",
       render: (row) => (
-        <span
-          className={`rounded-full px-2 py-0.5 text-xs ${statusBadge(
-            row.estado
-          )}`}
-        >
-          {row.estado === "aprobado" ? "Aprobado" : "Pendiente"}
-        </span>
+        <StatusBadge
+          label={row.estado === "aprobado" ? "Aprobado" : "Pendiente"}
+          tone={row.estado === "aprobado" ? "approved" : "pending"}
+        />
       ),
     },
     {
@@ -116,20 +113,6 @@ const ClubDetail = ({
   ];
 
   const coachColumns: TableColumn<ClubCoachRow>[] = [
-    {
-      key: "fotoUrl",
-      label: "Foto",
-      render: (row) =>
-        row.fotoUrl ? (
-          <img
-            src={row.fotoUrl}
-            alt={row.nombre}
-            className="h-12 w-12 rounded-lg object-cover"
-          />
-        ) : (
-          <div className="h-12 w-12 rounded-lg bg-slate-100" />
-        ),
-    },
     { key: "nombre", label: "Nombre" },
     { key: "documento", label: "Numero de Documento" },
     { key: "liga", label: "Liga" },
@@ -138,13 +121,10 @@ const ClubDetail = ({
       key: "estado",
       label: "Estado",
       render: (row) => (
-        <span
-          className={`rounded-full px-2 py-0.5 text-xs ${statusBadge(
-            row.estado
-          )}`}
-        >
-          {row.estado === "aprobado" ? "Aprobado" : "Pendiente"}
-        </span>
+        <StatusBadge
+          label={row.estado === "aprobado" ? "Aprobado" : "Pendiente"}
+          tone={row.estado === "aprobado" ? "approved" : "pending"}
+        />
       ),
     },
     { key: "fechaRegistro", label: "Fecha de Registro" },
