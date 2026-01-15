@@ -30,7 +30,7 @@ const Sidebar = ({
     <aside
       className={`fixed left-0 top-0 z-40 hidden h-screen ${
         open ? "w-72" : "w-16"
-      } flex-col bg-gradient-to-b from-league-700 via-league-800 to-league-900 text-white transition-[width] duration-300 ease-out lg:flex`}
+      } flex-col bg-[linear-gradient(180deg,#1C6F3C_0%,#145C32_35%,#0F4C2A_70%,#0B331F_100%)] text-white transition-[width] duration-300 ease-out lg:flex`}
     >
       <div className="relative min-h-16 px-3 pt-3 pb-2">
         <button

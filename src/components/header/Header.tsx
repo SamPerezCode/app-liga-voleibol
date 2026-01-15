@@ -40,8 +40,8 @@ const Header = ({ onMenuClick, user }: HeaderProps) => {
   }, []);
 
   return (
-    <div className="relative  rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 shadow-card-soft">
-      <div className="pointer-events-none absolute inset-x-px top-0 h-1 rounded-t-2xl bg-league-sweep" />
+    <div className="relative rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 shadow-card-soft bg-league-sweep bg-[length:100%_4px] bg-top bg-no-repeat bg-clip-padding">
+      {" "}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
