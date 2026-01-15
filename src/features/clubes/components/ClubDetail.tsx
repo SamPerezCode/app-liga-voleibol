@@ -19,11 +19,6 @@ type Props = {
   onBack: () => void;
 };
 
-const statusBadge = (estado: string) =>
-  estado === "aprobado"
-    ? "bg-emerald-100 text-emerald-700"
-    : "bg-amber-100 text-amber-700";
-
 const ClubDetail = ({
   club,
   documents,
