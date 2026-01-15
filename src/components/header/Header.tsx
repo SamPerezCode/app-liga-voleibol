@@ -4,8 +4,8 @@ import type { User } from "../../app/types/users";
 type HeaderProps = {
   onMenuClick: () => void;
   user: User;
+  sectionTitle: string;
 };
-
 const roleLabels: Record<User["role"], string> = {
   admin: "Admin",
   liga: "Liga",
@@ -15,7 +15,7 @@ const roleLabels: Record<User["role"], string> = {
   arbitro: "Arbitro",
 };
 
-const Header = ({ onMenuClick, user }: HeaderProps) => {
+const Header = ({ onMenuClick, user, sectionTitle }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -59,8 +59,13 @@ const Header = ({ onMenuClick, user }: HeaderProps) => {
             className="hidden lg:block h-9 w-9"
           />
 
-          <div className="text-sm font-medium text-slate-600">
-            Liga de Voleibol del Cesar
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-semibold text-slate-800">
+              {sectionTitle}
+            </span>
+            <span className="text-xs text-slate-500">
+              Liga de Voleibol del Cesar
+            </span>
           </div>
         </div>
 

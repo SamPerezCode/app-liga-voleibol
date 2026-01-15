@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import MobileSidebar from "../components/sidebar/MobileSidebar";
+import Footer from "../components/footer/Footer";
 import Contain from "./contain/Contain";
 import type { AppSection } from "./types/layout";
 import { users } from "./mocks/users";
@@ -40,21 +41,28 @@ const AppShell = () => {
         }}
       />
 
-      <main
-        className={`${
+      <div
+        className={`min-h-screen ${
           sidebarOpen ? "lg:pl-72" : "lg:pl-16"
-        } min-h-screen`}
+        } flex flex-col`}
       >
-        <div className="px-4 py-4 sm:px-6 lg:px-8">
-          <Header
-            onMenuClick={() => setMobileOpen(true)}
-            user={currentUser}
-          />{" "}
-          <div className="mt-4 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
-            <Contain activeSection={activeSection} />
+        <main className="flex-1">
+          <div className="px-4 py-6 sm:px-6 lg:px-8">
+            <Header
+              onMenuClick={() => setMobileOpen(true)}
+              user={currentUser}
+              sectionTitle={activeSection}
+            />
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
+              <Contain activeSection={activeSection} />
+            </div>
           </div>
+        </main>
+
+        <div className="px-4 pb-6 sm:px-6 lg:px-8">
+          <Footer />
         </div>
-      </main>
+      </div>
     </div>
   );
 };
