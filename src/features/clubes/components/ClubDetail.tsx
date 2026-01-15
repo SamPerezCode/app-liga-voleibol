@@ -11,6 +11,12 @@ import type { TableColumn } from "../../../ui/Table";
 import Pagination from "../../../ui/Pagination";
 import StatusBadge from "../../../ui/StatusBadge";
 
+import AthletesTableDesktop from "./AthletesTableDesktop";
+import AthletesCardsMobile from "./AthletesCardsMobile";
+import CoachesTableDesktop from "./CoachesTableDesktop";
+import CoachesCardsMobile from "./CoachesCardsMobile";
+import PersonAvatar from "./PersonAvatar";
+
 type Props = {
   club: Club;
   documents: ClubDocument[];
@@ -72,16 +78,13 @@ const ClubDetail = ({
     {
       key: "fotoUrl",
       label: "Foto",
-      render: (row) =>
-        row.fotoUrl ? (
-          <img
-            src={row.fotoUrl}
-            alt={row.nombre}
-            className="h-12 w-12 rounded-lg object-cover"
-          />
-        ) : (
-          <div className="h-12 w-12 rounded-lg bg-slate-100" />
-        ),
+      render: (row) => (
+        <PersonAvatar
+          name={row.nombre}
+          photoUrl={row.fotoUrl}
+          size="sm"
+        />
+      ),
     },
     { key: "nombre", label: "Nombre" },
     { key: "documento", label: "Numero de Documento" },
@@ -108,6 +111,17 @@ const ClubDetail = ({
   ];
 
   const coachColumns: TableColumn<ClubCoachRow>[] = [
+    {
+      key: "fotoUrl",
+      label: "Foto",
+      render: (row) => (
+        <PersonAvatar
+          name={row.nombre}
+          photoUrl={row.fotoUrl}
+          size="sm"
+        />
+      ),
+    },
     { key: "nombre", label: "Nombre" },
     { key: "documento", label: "Numero de Documento" },
     { key: "liga", label: "Liga" },
@@ -271,7 +285,12 @@ const ClubDetail = ({
         </button>
         {openSection.athletes && (
           <div className="rounded-xl border border-slate-200 bg-white/70 p-4 space-y-4">
-            <Table columns={athleteColumns} data={pagedAthletes} />
+            <AthletesTableDesktop
+              rows={pagedAthletes}
+              columns={athleteColumns}
+            />
+            <AthletesCardsMobile rows={pagedAthletes} />
+
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span>
                 Mostrando {pagedAthletes.length} de {athletes.length}
@@ -303,7 +322,11 @@ const ClubDetail = ({
         </button>
         {openSection.coaches && (
           <div className="rounded-xl border border-slate-200 bg-white/70 p-4 space-y-4">
-            <Table columns={coachColumns} data={pagedCoaches} />
+            <CoachesTableDesktop
+              rows={pagedCoaches}
+              columns={coachColumns}
+            />
+            <CoachesCardsMobile rows={pagedCoaches} />
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span>
                 Mostrando {pagedCoaches.length} de {coaches.length}
