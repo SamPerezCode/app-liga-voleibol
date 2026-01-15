@@ -1,22 +1,12 @@
+import type { AppSection } from "../../app/types/layout";
+import { navItems } from "../../app/mocks/navigation";
+
 type MobileSidebarProps = {
   open: boolean;
   onClose: () => void;
-  activeItem: string;
-  onSelect: (item: string) => void;
+  activeItem: AppSection;
+  onSelect: (item: AppSection) => void;
 };
-
-const navItems = [
-  { label: "Inicio", icon: "/home-dashboard.svg" },
-  { label: "Solicitudes", icon: "/notifications.svg" },
-  { label: "Clubes", icon: "/clubs.svg" },
-  { label: "Deportistas", icon: "/athlete.svg" },
-  { label: "Entrenadores", icon: "/coach.svg" },
-  { label: "Campeonatos", icon: "/championship.svg" },
-  { label: "Partidos", icon: "/matches.svg" },
-  { label: "Documentos", icon: "/documents.svg" },
-  { label: "Pagos", icon: "/payments.svg" },
-  { label: "Perfil", icon: "/profile.svg" },
-];
 
 const MobileSidebar = ({
   open,
@@ -27,20 +17,36 @@ const MobileSidebar = ({
   return (
     <div
       className={`fixed inset-0 z-50 lg:hidden ${
-        open ? "block" : "hidden"
+        open ? "pointer-events-auto" : "pointer-events-none"
       }`}
     >
       <div
-        className="absolute inset-0 bg-black/40"
+        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
         onClick={onClose}
       />
-      <aside className="absolute left-0 top-0 h-full w-72 bg-gradient-to-b from-league-700 via-league-800 to-league-900 p-6 text-white shadow-xl">
+      <aside
+        className={`absolute left-0 top-0 h-full w-72 bg-[linear-gradient(180deg,#1C6F3C_0%,#145C32_35%,#0F4C2A_70%,#0B331F_100%)] p-6 text-white shadow-xl transition-transform duration-300 ease-out ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {" "}
         <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm font-semibold">
-              Liga de Voleibol
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-white/10 p-1">
+              <img
+                src="/logo-liga-cesar.png"
+                alt="Liga de Voleibol del Cesar"
+                className="h-full w-full object-contain"
+              />
             </div>
-            <div className="text-xs text-white/70">Admin Liga</div>
+            <div>
+              <div className="text-sm font-semibold">
+                Liga de Voleibol
+              </div>
+              <div className="text-xs text-white/70">Admin Liga</div>
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -49,7 +55,6 @@ const MobileSidebar = ({
             ✕
           </button>
         </div>
-
         <nav className="mt-8 flex flex-col gap-1">
           {navItems.map((item) => {
             const isActive = activeItem === item.label;

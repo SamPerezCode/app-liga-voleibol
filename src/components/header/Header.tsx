@@ -52,13 +52,6 @@ const Header = ({ onMenuClick, user, sectionTitle }: HeaderProps) => {
             ☰
           </button>
 
-          {/* logo solo en desktop */}
-          <img
-            src="/logo-liga-cesar.png"
-            alt="Liga de Voleibol del Cesar"
-            className="hidden lg:block h-9 w-9"
-          />
-
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold text-slate-800">
               {sectionTitle}

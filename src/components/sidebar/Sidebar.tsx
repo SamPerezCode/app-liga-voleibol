@@ -1,4 +1,5 @@
 import type { AppSection } from "../../app/types/layout";
+import { navItems } from "../../app/mocks/navigation";
 
 type SidebarProps = {
   open: boolean;
@@ -6,19 +7,6 @@ type SidebarProps = {
   activeItem: AppSection;
   onSelect: (item: AppSection) => void;
 };
-
-const navItems: { label: AppSection; icon: string }[] = [
-  { label: "Inicio", icon: "/home-dashboard.svg" },
-  { label: "Solicitudes", icon: "/notifications.svg" },
-  { label: "Clubes", icon: "/clubs.svg" },
-  { label: "Deportistas", icon: "/athlete.svg" },
-  { label: "Entrenadores", icon: "/coach.svg" },
-  { label: "Campeonatos", icon: "/championship.svg" },
-  { label: "Partidos", icon: "/matches.svg" },
-  { label: "Documentos", icon: "/documents.svg" },
-  { label: "Pagos", icon: "/payments.svg" },
-  { label: "Perfil", icon: "/profile.svg" },
-];
 
 const Sidebar = ({
   open,
@@ -33,27 +21,43 @@ const Sidebar = ({
       } flex-col bg-[linear-gradient(180deg,#1C6F3C_0%,#145C32_35%,#0F4C2A_70%,#0B331F_100%)] text-white transition-[width] duration-300 ease-out lg:flex`}
     >
       <div className="relative min-h-16 px-3 pt-3 pb-2">
-        <button
-          onClick={onToggle}
-          className="absolute left-3 top-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20"
-          aria-label="Toggle sidebar"
-        >
-          {open ? "✕" : "☰"}
-        </button>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {open && (
+              <div className="h-10 w-10 rounded-xl bg-white/10 p-1">
+                <img
+                  src="/logo-liga-cesar.png"
+                  alt="Liga de Voleibol del Cesar"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            )}
 
-        <div
-          className={`ml-14 overflow-hidden ${
-            open
-              ? "transition-[max-width,opacity,transform] duration-200 ease-out delay-50 max-w-[180px] opacity-100 translate-x-0"
-              : "transition-none max-w-0 opacity-0 -translate-x-2"
-          }`}
-        >
-          <div className="flex flex-col gap-0.5 leading-tight">
-            <span className="text-sm font-semibold">
-              Liga de Voleibol
-            </span>
-            <span className="text-xs text-white/70">Admin Liga</span>
+            <div
+              className={`overflow-hidden ${
+                open
+                  ? "transition-[max-width,opacity,transform] duration-200 ease-out delay-50 max-w-[180px] opacity-100 translate-x-0"
+                  : "transition-none max-w-0 opacity-0 -translate-x-2"
+              }`}
+            >
+              <div className="flex flex-col gap-0.5 leading-tight">
+                <span className="text-sm font-semibold">
+                  Liga de Voleibol
+                </span>
+                <span className="text-xs text-white/70">
+                  Admin Liga
+                </span>
+              </div>
+            </div>
           </div>
+
+          <button
+            onClick={onToggle}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20"
+            aria-label={open ? "Cerrar sidebar" : "Abrir sidebar"}
+          >
+            {open ? "✕" : "☰"}
+          </button>
         </div>
       </div>
 
@@ -64,6 +68,7 @@ const Sidebar = ({
       >
         {navItems.map((item) => {
           const isActive = activeItem === item.label;
+
           return (
             <button
               key={item.label}
