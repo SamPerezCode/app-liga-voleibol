@@ -15,6 +15,7 @@ import AthletesTableDesktop from "./AthletesTableDesktop";
 import AthletesCardsMobile from "./AthletesCardsMobile";
 import CoachesTableDesktop from "./CoachesTableDesktop";
 import CoachesCardsMobile from "./CoachesCardsMobile";
+import DocumentsCardsMobile from "./DocumentsCardsMobile";
 import PersonAvatar from "./PersonAvatar";
 
 type Props = {
@@ -266,8 +267,11 @@ const ClubDetail = ({
           <span>{openSection.documents ? "▲" : "▼"}</span>
         </button>
         {openSection.documents && (
-          <div className="rounded-xl border border-slate-200 bg-white/70 p-4">
-            <Table columns={documentColumns} data={documents} />
+          <div className="rounded-xl border border-slate-200 bg-white/70 p-4 space-y-4">
+            <div className="hidden md:block">
+              <Table columns={documentColumns} data={documents} />
+            </div>
+            <DocumentsCardsMobile rows={documents} />
           </div>
         )}
 
