@@ -12,12 +12,12 @@ import PerfilPage from "../../features/perfil/pages/PerfilPage";
 
 type Props = {
   activeSection: AppSection;
+  onNavigate: (section: AppSection) => void;
 };
-
-const Contain = ({ activeSection }: Props) => {
+const Contain = ({ activeSection, onNavigate }: Props) => {
   switch (activeSection) {
     case "Inicio":
-      return <Home />;
+      return <Home onNavigate={onNavigate} />;
     case "Solicitudes":
       return <SolicitudesPage />;
     case "Clubes":

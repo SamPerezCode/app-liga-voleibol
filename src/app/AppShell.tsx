@@ -70,7 +70,10 @@ const AppShell = () => {
               onLogout={handleLogout}
             />
             <div className="mt-6 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
-              <Contain activeSection={activeSection} />
+              <Contain
+                activeSection={activeSection}
+                onNavigate={setActiveSection}
+              />
             </div>
           </div>
         </main>
