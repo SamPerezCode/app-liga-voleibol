@@ -26,11 +26,13 @@ const BracketMatchCard = ({ match }: Props) => {
   }
 
   return (
-    <div className="w-full max-w-[360px] min-h-[140px] rounded-2xl border border-slate-200 bg-white/85 p-5 shadow-card-soft">
+    <div className="w-full max-w-[360px] min-h-[150px] rounded-2xl border border-slate-200 bg-white/85 p-5 shadow-card-soft">
       <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <TeamAvatar team={match.teamA} size="lg" />
-          <span className="min-h-[36px] text-xs font-semibold text-slate-700 leading-tight">
+        <div className="flex flex-col items-center text-center">
+          <div className="flex h-16 items-center justify-center">
+            <TeamAvatar team={match.teamA} size="lg" />
+          </div>
+          <span className="mt-2 min-h-[36px] text-xs font-semibold text-slate-700 leading-tight">
             {match.teamA?.name ?? "No definido"}
           </span>
         </div>
@@ -41,9 +43,11 @@ const BracketMatchCard = ({ match }: Props) => {
           </span>
         </div>
 
-        <div className="flex flex-col items-center gap-2 text-center">
-          <TeamAvatar team={match.teamB} size="lg" />
-          <span className="min-h-[36px] text-xs font-semibold text-slate-700 leading-tight">
+        <div className="flex flex-col items-center text-center">
+          <div className="flex h-16 items-center justify-center">
+            <TeamAvatar team={match.teamB} size="lg" />
+          </div>
+          <span className="mt-2 min-h-[36px] text-xs font-semibold text-slate-700 leading-tight">
             {match.teamB?.name ?? "No definido"}
           </span>
         </div>
