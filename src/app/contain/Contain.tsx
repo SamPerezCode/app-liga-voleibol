@@ -5,6 +5,7 @@ import ClubesPage from "../../features/clubes/components/ClubesPage";
 import DeportistasPage from "../../features/deportistas/pages/DeportistasPage";
 import EntrenadoresPage from "../../features/entrenadores/pages/EntrenadoresPage";
 import CampeonatosPage from "../../features/campeonatos/pages/CampeonatosPage";
+import PartidosPage from "../../features/partidos/pages/PartidosPage";
 
 type Props = {
   activeSection: AppSection;
@@ -25,6 +26,7 @@ const Contain = ({ activeSection }: Props) => {
     case "Campeonatos":
       return <CampeonatosPage />;
     case "Partidos":
+      return <PartidosPage />;
     case "Documentos":
     case "Pagos":
     case "Perfil":
