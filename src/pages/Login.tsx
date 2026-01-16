@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Login = () => {
   return (
     <div className="relative min-h-screen bg-league-soft text-slate-900">
@@ -89,7 +91,10 @@ const Login = () => {
                 Ingresar
               </button>
 
-              <button className="flex items-center justify-center gap-2 rounded-xl border border-league-600 bg-white/70 px-4 py-3 text-sm font-semibold text-league-700 backdrop-blur hover:bg-league-50">
+              <Link
+                to="/registro"
+                className="flex items-center justify-center gap-2 rounded-xl border border-league-600 bg-white/70 px-4 py-3 text-sm font-semibold text-league-700 backdrop-blur hover:bg-league-50"
+              >
                 <svg
                   viewBox="0 0 24 24"
                   className="h-4 w-4"
@@ -101,15 +106,15 @@ const Login = () => {
                   <path d="M5 12h14" />
                 </svg>
                 Registrarse
-              </button>
+              </Link>
             </div>
-            <div className="pt-2">
-              <button
-                type="button"
-                className="mx-auto flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-3 py-1.5 text-xs font-medium text-slate-500 backdrop-blur transition hover:border-league-300 hover:text-league-700"
+            <div className="pt-2 flex justify-center">
+              <Link
+                to="/recuperar"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-3 py-1.5 text-xs font-medium text-slate-500 backdrop-blur transition hover:border-league-300 hover:text-league-700"
               >
                 ¿Olvido su contrasena?
-              </button>
+              </Link>
             </div>
           </form>{" "}
         </div>

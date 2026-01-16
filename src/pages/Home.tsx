@@ -80,8 +80,7 @@ const Home = () => {
               >
                 <img
                   src={stat.icon}
-                  alt=""
-                  className="h-5 w-5 opacity-80"
+                  className="h-5 w-5 opacity-80 filter brightness-75 contrast-125"
                 />
               </div>
             </div>
