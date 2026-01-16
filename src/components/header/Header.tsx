@@ -5,6 +5,8 @@ type HeaderProps = {
   onMenuClick: () => void;
   user: User;
   sectionTitle: string;
+  onProfile: () => void;
+  onLogout: () => void;
 };
 const roleLabels: Record<User["role"], string> = {
   admin: "Admin",
@@ -15,7 +17,13 @@ const roleLabels: Record<User["role"], string> = {
   arbitro: "Arbitro",
 };
 
-const Header = ({ onMenuClick, user, sectionTitle }: HeaderProps) => {
+const Header = ({
+  onMenuClick,
+  user,
+  sectionTitle,
+  onProfile,
+  onLogout,
+}: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -92,7 +100,13 @@ const Header = ({ onMenuClick, user, sectionTitle }: HeaderProps) => {
                 </div>
               </div>
               <div className="border-t border-slate-100 my-1" />{" "}
-              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50">
+              <button
+                onClick={() => {
+                  onProfile();
+                  setOpen(false);
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+              >
                 {" "}
                 <svg
                   viewBox="0 0 24 24"
@@ -106,7 +120,14 @@ const Header = ({ onMenuClick, user, sectionTitle }: HeaderProps) => {
                 </svg>
                 Mi perfil
               </button>
-              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50">
+              <button
+                onClick={() => {
+                  onLogout();
+                  setOpen(false);
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+              >
+                {" "}
                 <svg
                   viewBox="0 0 24 24"
                   className="h-4 w-4"

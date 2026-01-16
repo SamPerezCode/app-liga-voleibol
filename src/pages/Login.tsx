@@ -1,6 +1,24 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { authenticate } from "../app/mocks/auth";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const user = authenticate(username.trim(), password);
+    if (!user) {
+      setError("Usuario o contrasena invalida.");
+      return;
+    }
+    localStorage.setItem("auth:userId", user.id);
+    setError("");
+    window.location.assign("/");
+  };
+
   return (
     <div className="relative min-h-screen bg-league-soft text-slate-900">
       <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 py-10 lg:grid-cols-2 lg:py-16">
@@ -19,7 +37,8 @@ const Login = () => {
               Escriba su usuario y contraseña
             </p>
           </div>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {" "}
             <div>
               <label className="text-sm text-slate-600">
                 Usuario
@@ -39,12 +58,13 @@ const Login = () => {
                 </span>
                 <input
                   type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="w-full rounded-xl border border-slate-200 bg-white/70 py-3 pl-11 pr-4 text-sm text-ink-900 placeholder:text-slate-400 focus:border-league-400 focus:outline-none"
                   placeholder="usuario"
                 />
               </div>
             </div>
-
             <div>
               <label className="text-sm text-slate-600">
                 Contrasena
@@ -70,14 +90,19 @@ const Login = () => {
                 </span>
                 <input
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-xl border border-slate-200 bg-white/70 py-3 pl-11 pr-4 text-sm text-ink-900 placeholder:text-slate-400 focus:border-league-400 focus:outline-none"
                   placeholder="********"
                 />
               </div>
             </div>
-
             <div className="flex flex-col gap-3 pt-2">
-              <button className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-league-500 via-league-400 to-league-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-league-500/20 transition hover:from-league-600 hover:to-league-700">
+              <button
+                type="submit"
+                className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-league-500 via-league-400 to-league-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-league-500/20 transition hover:from-league-600 hover:to-league-700"
+              >
+                {" "}
                 <svg
                   viewBox="0 0 24 24"
                   className="h-4 w-4"
@@ -90,6 +115,12 @@ const Login = () => {
                 </svg>
                 Ingresar
               </button>
+
+              {error && (
+                <div className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-600">
+                  {error}
+                </div>
+              )}
 
               <Link
                 to="/registro"

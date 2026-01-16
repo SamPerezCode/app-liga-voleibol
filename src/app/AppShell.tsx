@@ -13,7 +13,21 @@ const AppShell = () => {
   const [activeSection, setActiveSection] =
     useState<AppSection>("Inicio");
 
-  const currentUser = users.find((u) => u.role === "admin")!;
+  const storedId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("auth:userId")
+      : null;
+
+  const currentUser =
+    users.find((u) => u.id === storedId) ??
+    users.find((u) => u.role === "admin")!;
+
+  const handleProfile = () => setActiveSection("Perfil");
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth:userId");
+    window.location.assign("/login");
+  };
 
   return (
     <div className="min-h-screen bg-league-soft text-slate-900">
@@ -52,6 +66,8 @@ const AppShell = () => {
               onMenuClick={() => setMobileOpen(true)}
               user={currentUser}
               sectionTitle={activeSection}
+              onProfile={handleProfile}
+              onLogout={handleLogout}
             />
             <div className="mt-6 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
               <Contain activeSection={activeSection} />
