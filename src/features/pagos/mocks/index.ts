@@ -1,0 +1,58 @@
+import type { Payment } from "../types";
+
+export const payments: Payment[] = [
+  {
+    id: "p-001",
+    type: "Inscripcion",
+    amount: 1423500,
+    reference: "011120250702686568d65e859",
+    method: "BANCOLOMBIA_TRANSFER",
+    status: "paid",
+    paidAt: "2025-07-02 12:13:58",
+  },
+  {
+    id: "p-002",
+    type: "Mensualidad",
+    amount: 50000,
+    reference: "PSE-20250702-8123",
+    method: "PSE",
+    status: "pending",
+    paidAt: "2025-07-02 10:05:11",
+  },
+  {
+    id: "p-003",
+    type: "Inscripcion",
+    amount: 1423500,
+    reference: "REC-20250701-9921",
+    method: "EFECTIVO",
+    status: "paid",
+    paidAt: "2025-07-01 08:43:21",
+  },
+  {
+    id: "p-004",
+    type: "Mensualidad",
+    amount: 50000,
+    reference: "PSE-20250628-3381",
+    method: "PSE",
+    status: "unpaid",
+    paidAt: "2025-06-28 14:11:09",
+  },
+  {
+    id: "p-005",
+    type: "Mensualidad",
+    amount: 50000,
+    reference: "PSE-20250625-2044",
+    method: "PSE",
+    status: "paid",
+    paidAt: "2025-06-25 12:01:35",
+  },
+  {
+    id: "p-006",
+    type: "Inscripcion",
+    amount: 1423500,
+    reference: "REC-20250620-1177",
+    method: "EFECTIVO",
+    status: "paid",
+    paidAt: "2025-06-20 09:22:18",
+  },
+];

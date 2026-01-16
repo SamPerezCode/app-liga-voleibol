@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { tournaments, matchResults, bracketStages } from "../mocks";
 import TournamentCard from "../components/TournamentCard";
-import PartidosDetalle from "./PartidosDetalle";
+import PartidosDetalle from "../components/PartidosDetalle";
 import type { Tournament } from "../types";
 
 const PartidosPage = () => {

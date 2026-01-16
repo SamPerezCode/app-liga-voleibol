@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../../../ui/Button";
-import MatchResultCard from "../components/MatchResultCard";
-import BracketMatchCard from "../components/BracketMatchCard";
+import MatchResultCard from "./MatchResultCard";
+import BracketMatchCard from "./BracketMatchCard";
 import type { BracketStage, MatchResult, Tournament } from "../types";
 
 type Props = {
