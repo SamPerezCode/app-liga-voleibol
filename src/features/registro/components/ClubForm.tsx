@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import { municipiosCesar } from "../../../app/mocks/cesarMunicipios";
 import Input from "../../../ui/Input";
 import Select from "../../../ui/Select";
 import Button from "../../../ui/Button";
@@ -33,25 +34,14 @@ const ClubForm = ({ formRef }: Props) => {
         </div>
 
         <div>
-          <label className="text-xs text-slate-500">
-            Departamento
-          </label>
-          <Select defaultValue="">
-            <option value="" disabled>
-              Seleccione una opcion
-            </option>
-            <option>CESAR</option>
-            <option>MAGDALENA</option>
-          </Select>
-        </div>
-        <div>
           <label className="text-xs text-slate-500">Municipio</label>
           <Select defaultValue="">
             <option value="" disabled>
               Seleccione una opcion
             </option>
-            <option>Valledupar</option>
-            <option>Aguachica</option>
+            {municipiosCesar.map((mun) => (
+              <option key={mun}>{mun}</option>
+            ))}
           </Select>
         </div>
 

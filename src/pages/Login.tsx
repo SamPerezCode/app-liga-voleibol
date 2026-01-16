@@ -150,16 +150,46 @@ const Login = () => {
           </form>{" "}
         </div>
 
-        <div className="rounded-2xl bg-league-sweep p-10 text-white shadow-card-soft">
-          <h2 className="text-3xl font-semibold">Bienvenido</h2>
-          <p className="mt-3 text-sm text-white/85">
-            Ingresa a la plataforma oficial de la Liga de Voleibol del
-            Cesar para acceder a información de clubes, partidos,
-            campeonatos, pagos e inscripciones.
-          </p>
-          <div className="mt-6 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm">
-            Gestión centralizada para ligas, clubes, deportistas y
-            entrenadores.
+        <div className="relative overflow-hidden rounded-3xl bg-league-sweep p-8 text-white shadow-card-soft">
+          <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
+          <div className="relative">
+            <span className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[11px] uppercase tracking-[0.25em] text-white/80">
+              Liga del Cesar
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold">
+              Gestion deportiva
+            </h2>
+            <p className="mt-3 text-sm text-white/85">
+              Plataforma creada para la Liga de Voleibol del Cesar.
+              Registros, aprobaciones y pagos en un solo lugar.
+            </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/70">
+                  Pagos
+                </div>
+                <p className="mt-2 text-sm font-semibold">
+                  Recaudos en linea
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/70">
+                  Solicitudes y aprobaciones
+                </div>
+                <p className="mt-2 text-sm font-semibold">
+                  Inscripciones y validaciones
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/70">
+                  Gestion de clubes
+                </div>
+                <p className="mt-2 text-sm font-semibold">
+                  Informacion y seguimiento
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,21 +1,15 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../ui/Button";
-import LigaForm from "../components/LigaForm";
+
 import ClubForm from "../components/ClubForm";
 import DeportistaForm from "../components/DeportistaForm";
 import EntrenadorForm from "../components/EntrenadorForm";
 import ArbitroForm from "../components/ArbitroForm";
+import Button from "../../../ui/Button";
 
-type RegistroRole =
-  | "liga"
-  | "club"
-  | "deportista"
-  | "entrenador"
-  | "arbitro";
+type RegistroRole = "club" | "deportista" | "entrenador" | "arbitro";
 
 const roleOptions: { id: RegistroRole; label: string }[] = [
-  { id: "liga", label: "Liga" },
   { id: "club", label: "Club" },
   { id: "deportista", label: "Deportista" },
   { id: "entrenador", label: "Entrenador" },
@@ -24,7 +18,7 @@ const roleOptions: { id: RegistroRole; label: string }[] = [
 
 const RegistroPage = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState<RegistroRole>("liga");
+  const [role, setRole] = useState<RegistroRole>("club");
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const handleClear = () => {
@@ -45,10 +39,6 @@ const RegistroPage = () => {
               <h1 className="text-lg font-semibold text-slate-800">
                 Registro - Liga de Voleibol del Cesar
               </h1>
-              <p className="text-xs text-slate-500">
-                Selecciona el tipo de usuario y completa el
-                formulario.
-              </p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -68,8 +58,28 @@ const RegistroPage = () => {
             </div>
           </div>
 
-          <div className="mt-4 rounded-full border border-slate-200 bg-slate-50/70 p-1">
-            <div className="flex flex-wrap gap-2">
+          <p className="mt-4 text-xs text-slate-500">
+            Selecciona el tipo de usuario y completa el formulario.
+          </p>
+
+          <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50/70 p-2">
+            <div className="sm:hidden">
+              <select
+                value={role}
+                onChange={(e) =>
+                  setRole(e.target.value as RegistroRole)
+                }
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+              >
+                {roleOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="hidden sm:flex sm:flex-wrap sm:justify-center sm:gap-2">
               {roleOptions.map((option) => {
                 const active = option.id === role;
                 return (
@@ -101,7 +111,6 @@ const RegistroPage = () => {
           </div>
 
           <div className="mt-6 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-inner">
-            {role === "liga" && <LigaForm formRef={formRef} />}
             {role === "club" && <ClubForm formRef={formRef} />}
             {role === "deportista" && (
               <DeportistaForm formRef={formRef} />
