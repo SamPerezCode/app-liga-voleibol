@@ -16,21 +16,19 @@ type DetailProps = {
   onBack: () => void;
 };
 
+type DetailTab = "pre" | "ins";
 const CampeonatoDetalle = ({
   championshipId,
   registration,
   players,
   onBack,
 }: DetailProps) => {
-  const [openSection, setOpenSection] = useState({
-    pre: true,
-    ins: true,
-  });
   const [assignPlayer, setAssignPlayer] =
     useState<ChampionshipPlayer | null>(null);
   const [cardPlayer, setCardPlayer] =
     useState<ChampionshipPlayer | null>(null);
   const [jerseyNumber, setJerseyNumber] = useState("");
+  const [tab, setTab] = useState<DetailTab>("pre");
 
   const championship = championships.find(
     (c) => c.id === championshipId
@@ -48,6 +46,7 @@ const CampeonatoDetalle = ({
       </section>
     );
   }
+
   const pre = players.filter((p) => p.stage === "preinscrito");
   const ins = players.filter((p) => p.stage === "inscrito");
 
@@ -129,37 +128,100 @@ const CampeonatoDetalle = ({
         </div>
       </div>
 
-      <button
-        className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-left text-sm font-semibold text-slate-700"
-        onClick={() => setOpenSection((p) => ({ ...p, pre: !p.pre }))}
-      >
-        Deportistas Preinscritos
-        <span>{openSection.pre ? "▲" : "▼"}</span>
-      </button>
-      {openSection.pre && (
-        <PlayersTable
-          rows={pre}
-          showActions={false}
-          onAssign={() => {}}
-          onView={() => {}}
-        />
-      )}
+      <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+        {/* Sub-nav */}
+        <div className="space-y-3">
+          <div className="min-w-0 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
+            <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                Navegacion
+              </div>
 
-      <button
-        className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-left text-sm font-semibold text-slate-700"
-        onClick={() => setOpenSection((p) => ({ ...p, ins: !p.ins }))}
-      >
-        Deportistas Inscritos
-        <span>{openSection.ins ? "▲" : "▼"}</span>
-      </button>
-      {openSection.ins && (
-        <PlayersTable
-          rows={ins}
-          showActions
-          onAssign={(player) => setAssignPlayer(player)}
-          onView={(player) => setCardPlayer(player)}
-        />
-      )}
+              {/* Mobile select */}
+              <div className="mt-3 lg:hidden">
+                <select
+                  value={tab}
+                  onChange={(e) =>
+                    setTab(e.target.value as DetailTab)
+                  }
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+                >
+                  <option value="pre">
+                    Deportistas Preinscritos ({pre.length})
+                  </option>
+                  <option value="ins">
+                    Deportistas Inscritos ({ins.length})
+                  </option>
+                </select>
+              </div>
+
+              {/* Desktop nav */}
+              <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+                {[
+                  {
+                    id: "pre",
+                    label: "Deportistas Preinscritos",
+                    count: pre.length,
+                  },
+                  {
+                    id: "ins",
+                    label: "Deportistas Inscritos",
+                    count: ins.length,
+                  },
+                ].map((item) => {
+                  const active = tab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setTab(item.id as DetailTab)}
+                      className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                        active
+                          ? "bg-league-700 text-white shadow-md"
+                          : "bg-white text-slate-600 hover:bg-slate-50"
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs ${
+                          active
+                            ? "bg-white/20 text-white"
+                            : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        {item.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Panel */}
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
+          <div className="rounded-xl border border-slate-200 bg-white/80 p-4 space-y-4">
+            {tab === "pre" && (
+              <PlayersTable
+                rows={pre}
+                showActions={false}
+                onAssign={() => {}}
+                onView={() => {}}
+              />
+            )}
+
+            {tab === "ins" && (
+              <PlayersTable
+                rows={ins}
+                showActions
+                onAssign={(player) => setAssignPlayer(player)}
+                onView={(player) => setCardPlayer(player)}
+              />
+            )}
+          </div>
+        </div>
+      </div>
 
       <Modal
         open={assignPlayer !== null}
@@ -211,7 +273,7 @@ const CampeonatoDetalle = ({
         {cardPlayer && (
           <div className="flex justify-center">
             <div className="w-full max-w-xs rounded-2xl border border-slate-200 bg-white shadow-card-soft">
-              <div className="h-16 rounded-t-2xl bg-gradient-to-r from-amber-400 via-blue-500 to-red-500" />
+              <div className="h-16 rounded-t-2xl bg-league-sweep" />
               <div className="-mt-10 flex justify-center">
                 <PlayerAvatar
                   name={cardPlayer.fullName}
@@ -241,7 +303,7 @@ const CampeonatoDetalle = ({
                   </div>
                 </div>
                 <div className="mt-4 flex justify-center">
-                  <div className="h-20 w-20 rounded-lg bg-slate-100 text-[10px] text-slate-400 flex items-center justify-center">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-slate-100 text-[10px] text-slate-400">
                     QR
                   </div>
                 </div>

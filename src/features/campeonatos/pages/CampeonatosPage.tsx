@@ -1,20 +1,15 @@
 import { useMemo, useState } from "react";
-import type {
-  Championship,
-  ChampionshipRegistration,
-} from "../types";
+import type { ChampionshipRegistration } from "../types";
 import {
   championships,
   registrations,
   championshipPlayers,
 } from "../mocks";
 import Input from "../../../ui/Input";
-import Table from "../../../ui/Table";
-import type { TableColumn } from "../../../ui/Table";
 import Pagination from "../../../ui/Pagination";
-import StatusBadge from "../../../ui/StatusBadge";
 import ChampionshipsCardsMobile from "../components/ChampionshipsCardsMobile";
 import CampeonatoDetalle from "../components/CampeonatoDetalle";
+import ChampionshipsTableDesktop from "../components/ChampionshipsTableDesktop";
 
 const CampeonatosPage = () => {
   const [openSection, setOpenSection] = useState({
@@ -59,44 +54,6 @@ const CampeonatosPage = () => {
     );
   }
 
-  const columns: TableColumn<Championship>[] = [
-    { key: "name", label: "Nombre" },
-    { key: "city", label: "Ciudad" },
-    { key: "startDate", label: "Fecha inicio" },
-    { key: "endDate", label: "Fecha fin" },
-    { key: "category", label: "Categoria" },
-    {
-      key: "status",
-      label: "Estado",
-      render: (row) => <StatusBadge label={row.status} tone="info" />,
-    },
-    {
-      key: "id",
-      label: "Ver",
-      render: (row) => (
-        <button
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500"
-          onClick={() => setSelectedChampionshipId(row.id)}
-        >
-          i
-        </button>
-      ),
-    },
-  ];
-
-  const columnsNoInscritos: TableColumn<Championship>[] = [
-    { key: "name", label: "Nombre" },
-    { key: "city", label: "Ciudad" },
-    { key: "startDate", label: "Fecha inicio" },
-    { key: "endDate", label: "Fecha fin" },
-    { key: "category", label: "Categoria" },
-    {
-      key: "status",
-      label: "Estado",
-      render: (row) => <StatusBadge label={row.status} tone="info" />,
-    },
-  ];
-
   return (
     <section className="space-y-6">
       <h1 className="text-xl font-semibold text-league-700">
@@ -131,9 +88,11 @@ const CampeonatosPage = () => {
           </div>
 
           <div className="hidden md:block">
-            <Table columns={columns} data={paged} />
+            <ChampionshipsTableDesktop
+              rows={paged}
+              onView={setSelectedChampionshipId}
+            />
           </div>
-
           <ChampionshipsCardsMobile
             rows={paged}
             onView={setSelectedChampionshipId}
@@ -171,7 +130,7 @@ const CampeonatosPage = () => {
       {openSection.noInscritos && (
         <div className="rounded-xl border border-slate-200 bg-white/70 p-4 space-y-4">
           <div className="hidden md:block">
-            <Table columns={columnsNoInscritos} data={noInscritos} />
+            <ChampionshipsTableDesktop rows={noInscritos} />
           </div>
 
           <ChampionshipsCardsMobile
