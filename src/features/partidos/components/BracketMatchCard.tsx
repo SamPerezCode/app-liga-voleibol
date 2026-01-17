@@ -7,17 +7,17 @@ type Props = {
 
 const BracketMatchCard = ({ match }: Props) => {
   const isChampion = match.stage === "champion";
-  const hasBothTeams = Boolean(match.teamA && match.teamB);
 
-  if (isChampion && !hasBothTeams) {
+  if (isChampion) {
     return (
-      <div className="w-full max-w-[360px] min-h-[140px] rounded-2xl border border-slate-200 bg-white/85 p-5 shadow-card-soft text-center">
-        <div className="text-xs uppercase tracking-[0.3em] text-slate-400">
+      <div className="relative w-full max-w-[360px] overflow-hidden rounded-3xl border border-slate-200 bg-white/85 p-5 shadow-card-soft text-center">
+        <div className="absolute inset-x-0 top-0 h-1 bg-league-sweep" />
+        <div className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
           Campeon
         </div>
         <div className="mt-4 flex flex-col items-center gap-3">
           <TeamAvatar team={match.teamA} size="lg" />
-          <div className="text-sm font-semibold text-slate-700">
+          <div className="text-sm font-semibold text-slate-800">
             {match.teamA?.name ?? "No definido"}
           </div>
         </div>
@@ -26,29 +26,35 @@ const BracketMatchCard = ({ match }: Props) => {
   }
 
   return (
-    <div className="w-full max-w-[360px] min-h-[150px] rounded-2xl border border-slate-200 bg-white/85 p-5 shadow-card-soft">
-      <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
-        <div className="flex flex-col items-center text-center">
-          <div className="flex h-16 items-center justify-center">
-            <TeamAvatar team={match.teamA} size="lg" />
+    <div className="relative w-full max-w-[360px] overflow-hidden rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-card-soft">
+      <div className="absolute -right-10 -top-10 h-20 w-20 rounded-full bg-league-400/10 blur-2xl" />
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/80 px-3 py-2">
+          <div className="flex items-center gap-2">
+            <TeamAvatar team={match.teamA} size="sm" />
+            <span className="text-xs font-semibold text-slate-700">
+              {match.teamA?.name ?? "No definido"}
+            </span>
           </div>
-          <span className="mt-2 min-h-[36px] text-xs font-semibold text-slate-700 leading-tight">
-            {match.teamA?.name ?? "No definido"}
+          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+            A
           </span>
         </div>
 
-        <div className="flex h-16 items-center justify-center">
-          <span className="text-xs font-semibold tracking-[0.2em] text-slate-400">
-            VS
-          </span>
+        <div className="flex items-center justify-center text-[10px] uppercase tracking-[0.4em] text-slate-400">
+          VS
         </div>
 
-        <div className="flex flex-col items-center text-center">
-          <div className="flex h-16 items-center justify-center">
-            <TeamAvatar team={match.teamB} size="lg" />
+        <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/80 px-3 py-2">
+          <div className="flex items-center gap-2">
+            <TeamAvatar team={match.teamB} size="sm" />
+            <span className="text-xs font-semibold text-slate-700">
+              {match.teamB?.name ?? "No definido"}
+            </span>
           </div>
-          <span className="mt-2 min-h-[36px] text-xs font-semibold text-slate-700 leading-tight">
-            {match.teamB?.name ?? "No definido"}
+          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+            B
           </span>
         </div>
       </div>

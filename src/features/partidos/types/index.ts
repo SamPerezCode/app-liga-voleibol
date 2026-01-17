@@ -4,11 +4,19 @@ export type Team = {
   logoUrl?: string;
 };
 
+export type TournamentStatus =
+  | "en-curso"
+  | "programado"
+  | "finalizado";
+
 export type Tournament = {
   id: string;
   title: string;
   year: string;
   category: string;
+  city: string;
+  dateRange: string;
+  status: TournamentStatus;
 };
 
 export type MatchSet = {
