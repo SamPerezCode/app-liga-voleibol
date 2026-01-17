@@ -24,207 +24,251 @@ const AthleteDetail = ({ athlete, onBack }: Props) => {
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-card-soft">
-        <div className="flex gap-4 text-sm font-semibold text-slate-600">
-          <button
-            className={`pb-2 ${
-              tab === "resumen"
-                ? "border-b-2 border-league-600 text-league-700"
-                : ""
-            }`}
-            onClick={() => setTab("resumen")}
-          >
-            Resumen
-          </button>
-          <button
-            className={`pb-2 ${
-              tab === "carnet"
-                ? "border-b-2 border-league-600 text-league-700"
-                : ""
-            }`}
-            onClick={() => setTab("carnet")}
-          >
-            Carnet
-          </button>
+        <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+          {/* Sub-nav */}
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
+              <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                  Navegacion
+                </div>
+
+                {/* Mobile select */}
+                <div className="mt-3 lg:hidden">
+                  <select
+                    value={tab}
+                    onChange={(e) =>
+                      setTab(e.target.value as "resumen" | "carnet")
+                    }
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+                  >
+                    <option value="resumen">Resumen</option>
+                    <option value="carnet">Carnet</option>
+                  </select>
+                </div>
+
+                {/* Desktop nav */}
+                <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+                  {[
+                    { id: "resumen", label: "Resumen" },
+                    { id: "carnet", label: "Carnet" },
+                  ].map((item) => {
+                    const active = tab === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() =>
+                          setTab(item.id as "resumen" | "carnet")
+                        }
+                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                          active
+                            ? "bg-league-700 text-white shadow-md"
+                            : "bg-white text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Panel */}
+          <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
+            <div className="rounded-xl border border-slate-200 bg-white/80 p-4 space-y-4">
+              {tab === "resumen" ? (
+                <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center rounded-2xl bg-slate-50 p-6">
+                      <AthleteAvatar
+                        name={athlete.fullName}
+                        photoUrl={athlete.photoUrl}
+                        size="lg"
+                      />
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+                      <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                        Identificacion
+                      </div>
+                      <div className="mt-2 text-sm font-semibold text-slate-800">
+                        {athlete.fullName}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-500">
+                        {athlete.documentType}
+                      </div>
+                      <div className="mt-2 text-sm font-semibold text-slate-800">
+                        {athlete.documentNumber}
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+                      <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                        Contacto
+                      </div>
+                      <div className="mt-2 text-sm font-semibold text-slate-800">
+                        {athlete.phone}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-500">
+                        {athlete.email}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <StatusBadge
+                        label={
+                          athlete.status === "aprobado"
+                            ? "Aprobado"
+                            : "Pendiente"
+                        }
+                        tone={
+                          athlete.status === "aprobado"
+                            ? "approved"
+                            : "pending"
+                        }
+                      />
+                      <StatusBadge
+                        label={
+                          athlete.payment === "pagado"
+                            ? "Pagado"
+                            : "Sin pago"
+                        }
+                        tone={
+                          athlete.payment === "pagado"
+                            ? "paid"
+                            : "unpaid"
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+                        <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                          Nacimiento
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-slate-800">
+                          {athlete.birthCity}
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          {athlete.birthDept}
+                        </div>
+                        <div className="mt-2 text-xs text-slate-500">
+                          Fecha: {athlete.birthDate}
+                        </div>
+                      </div>
+
+                      <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+                        <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                          Residencia
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-slate-800">
+                          {athlete.residenceCity}
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          {athlete.residenceDept}
+                        </div>
+                        <div className="mt-2 text-xs text-slate-500">
+                          Barrio: {athlete.neighborhood}
+                        </div>
+                      </div>
+
+                      <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+                        <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                          Club
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-slate-800">
+                          {athlete.club}
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          {athlete.category}
+                        </div>
+                        <div className="mt-2 text-xs text-slate-500">
+                          Posicion: {athlete.position}
+                        </div>
+                      </div>
+
+                      <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+                        <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                          Condicion fisica
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-slate-800">
+                          {athlete.heightCm} cm · {athlete.weightKg}{" "}
+                          kg
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          RH {athlete.bloodType} · {athlete.gender}
+                        </div>
+                      </div>
+
+                      <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 sm:col-span-2">
+                        <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                          Direccion
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-slate-800">
+                          {athlete.address}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-center">
+                  <div className="w-full max-w-xs rounded-2xl border border-slate-200 bg-white shadow-card-soft">
+                    <div className="h-16 rounded-t-2xl bg-league-sweep" />
+                    <div className="-mt-10 flex justify-center">
+                      <AthleteAvatar
+                        name={athlete.fullName}
+                        photoUrl={athlete.photoUrl}
+                        size="lg"
+                      />
+                    </div>
+                    <div className="px-6 pb-6 pt-4 text-center">
+                      <div className="text-sm font-semibold text-slate-800">
+                        {athlete.fullName}
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        Deportista
+                      </div>
+                      <div className="mt-3 text-left text-xs text-slate-600 space-y-1">
+                        <div>
+                          <strong>Liga:</strong> Liga de Voleibol del
+                          Cesar
+                        </div>
+                        <div>
+                          <strong>Club:</strong> {athlete.club}
+                        </div>
+                        <div>
+                          <strong>Categoria:</strong>{" "}
+                          {athlete.category}
+                        </div>
+                        <div>
+                          <strong>Fecha de nacimiento:</strong>{" "}
+                          {athlete.birthDate}
+                        </div>
+                        <div>
+                          <strong>RH:</strong> {athlete.bloodType}
+                        </div>
+                      </div>
+                      <div className="mt-4 flex justify-center">
+                        <div className="h-20 w-20 rounded-lg bg-slate-100 text-[10px] text-slate-400 flex items-center justify-center">
+                          QR
+                        </div>
+                      </div>
+                      <div className="mt-2 text-[10px] text-slate-500">
+                        FCV-{athlete.documentNumber}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-
-        {tab === "resumen" ? (
-          <div className="mt-6 grid gap-6 lg:grid-cols-[180px_1fr]">
-            <div className="flex items-center justify-center rounded-2xl bg-slate-50 p-6">
-              <AthleteAvatar
-                name={athlete.fullName}
-                photoUrl={athlete.photoUrl}
-                size="lg"
-              />
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Nombre completo
-                </p>
-                <p className="text-sm font-semibold text-slate-800">
-                  {athlete.fullName}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Fecha de nacimiento
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.birthDate}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Depto. de nacimiento
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.birthDept}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Mun. de nacimiento
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.birthCity}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Depto. de residencia
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.residenceDept}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Mun. de residencia
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.residenceCity}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Barrio
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.neighborhood}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Direccion
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.address}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Club
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.club}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Categoria
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.category}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Documento
-                </p>
-                <p className="text-sm text-slate-700">
-                  {athlete.documentNumber}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase text-slate-400">
-                  Estado
-                </p>
-                <div className="mt-1 flex gap-2">
-                  <StatusBadge
-                    label={
-                      athlete.status === "aprobado"
-                        ? "Aprobado"
-                        : "Pendiente"
-                    }
-                    tone={
-                      athlete.status === "aprobado"
-                        ? "approved"
-                        : "pending"
-                    }
-                  />
-                  <StatusBadge
-                    label={
-                      athlete.payment === "pagado"
-                        ? "Pagado"
-                        : "Sin pago"
-                    }
-                    tone={
-                      athlete.payment === "pagado" ? "paid" : "unpaid"
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-6 flex justify-center">
-            <div className="w-full max-w-xs rounded-2xl border border-slate-200 bg-white shadow-card-soft">
-              <div className="h-16 rounded-t-2xl bg-gradient-to-r from-amber-400 via-blue-500 to-red-500" />
-              <div className="-mt-10 flex justify-center">
-                <AthleteAvatar
-                  name={athlete.fullName}
-                  photoUrl={athlete.photoUrl}
-                  size="lg"
-                />
-              </div>
-              <div className="px-6 pb-6 pt-4 text-center">
-                <div className="text-sm font-semibold text-slate-800">
-                  {athlete.fullName}
-                </div>
-                <div className="text-xs text-slate-500">
-                  Deportista
-                </div>
-                <div className="mt-3 text-left text-xs text-slate-600 space-y-1">
-                  <div>
-                    <strong>Liga:</strong> Liga de Voleibol del Cesar
-                  </div>
-                  <div>
-                    <strong>Club:</strong> {athlete.club}
-                  </div>
-                  <div>
-                    <strong>Categoria:</strong> {athlete.category}
-                  </div>
-                  <div>
-                    <strong>Fecha de nacimiento:</strong>{" "}
-                    {athlete.birthDate}
-                  </div>
-                  <div>
-                    <strong>RH:</strong> {athlete.bloodType}
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-center">
-                  <div className="h-20 w-20 rounded-lg bg-slate-100 text-[10px] text-slate-400 flex items-center justify-center">
-                    QR
-                  </div>
-                </div>
-                <div className="mt-2 text-[10px] text-slate-500">
-                  FCV-{athlete.documentNumber}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
