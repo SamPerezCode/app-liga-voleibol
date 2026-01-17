@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import Button from "../../../ui/Button";
 import Input from "../../../ui/Input";
 import Select from "../../../ui/Select";
 import Pagination from "../../../ui/Pagination";
@@ -17,7 +16,6 @@ const ClubesPage = () => {
     null
   );
   const [search, setSearch] = useState("");
-  const [department, setDepartment] = useState("todos");
   const [status, setStatus] = useState("todos");
   const pageSize = 6;
   const [page, setPage] = useState(1);
@@ -29,13 +27,6 @@ const ClubesPage = () => {
     setPage(1);
   };
 
-  const handleDepartmentChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setDepartment(event.target.value);
-    setPage(1);
-  };
-
   const handleStatusChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -43,27 +34,20 @@ const ClubesPage = () => {
     setPage(1);
   };
 
-  const departments = useMemo(() => {
-    return Array.from(
-      new Set(clubs.map((club) => club.departamento))
-    );
-  }, []);
-
   const filteredClubs = useMemo(() => {
+    const q = search.trim().toLowerCase();
     return clubs.filter((club) => {
       const matchesSearch =
-        search.trim().length === 0 ||
-        club.nombre.toLowerCase().includes(search.toLowerCase());
-
-      const matchesDept =
-        department === "todos" || club.departamento === department;
+        q.length === 0 ||
+        club.nombre.toLowerCase().includes(q) ||
+        club.municipio.toLowerCase().includes(q);
 
       const matchesStatus =
         status === "todos" || club.estado === status;
 
-      return matchesSearch && matchesDept && matchesStatus;
+      return matchesSearch && matchesStatus;
     });
-  }, [search, department, status]);
+  }, [search, status]);
 
   const pagedClubs = useMemo(() => {
     const start = (page - 1) * pageSize;
@@ -97,39 +81,61 @@ const ClubesPage = () => {
         <h1 className="text-xl font-semibold text-league-700">
           Clubes
         </h1>
-        <div className="grid gap-3 lg:grid-cols-[1.4fr_1fr_1fr_auto]">
-          <Input
-            placeholder="Nombre"
-            value={search}
-            onChange={handleSearchChange}
-          />
-          <Select
-            value={department}
-            onChange={handleDepartmentChange}
-          >
-            <option value="todos">Departamento</option>
-            {departments.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </Select>
-          <Select value={status} onChange={handleStatusChange}>
-            <option value="todos">Estado</option>
-            <option value="aprobado">Aprobado</option>
-            <option value="pendiente">Pendiente</option>
-          </Select>
-          <Button
-            variant="outline"
-            onClick={() => {
-              setSearch("");
-              setDepartment("todos");
-              setStatus("todos");
-              setPage(1);
-            }}
-          >
-            Restablecer
-          </Button>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-card-soft">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 min-w-[240px]">
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M20 20l-3.5-3.5" />
+                </svg>
+              </span>
+              <Input
+                placeholder="Buscar por nombre o municipio"
+                value={search}
+                onChange={handleSearchChange}
+                className="pl-9"
+              />
+            </div>
+
+            <div className="min-w-[180px]">
+              <Select value={status} onChange={handleStatusChange}>
+                <option value="todos">Estado</option>
+                <option value="aprobado">Aprobado</option>
+                <option value="pendiente">Pendiente</option>
+              </Select>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setStatus("todos");
+                setPage(1);
+              }}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-700"
+              aria-label="Restablecer filtros"
+              title="Restablecer filtros"
+            >
+              <img
+                src="/refresh.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-5 w-5 opacity-90 filter brightness-75 contrast-125"
+              />
+            </button>
+          </div>
+
+          <p className="mt-2 text-xs text-slate-500">
+            Busca clubes por nombre o municipio y filtra por estado.
+          </p>
         </div>
       </header>
 

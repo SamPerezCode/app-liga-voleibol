@@ -14,51 +14,91 @@ const ClubCard = ({ club, onClick }: Props) => {
     .join("")
     .toUpperCase();
 
+  const accent =
+    club.estado === "aprobado"
+      ? "from-emerald-400 via-green-500 to-emerald-600"
+      : "from-amber-400 via-orange-500 to-amber-600";
+
   return (
     <button
       onClick={onClick}
-      className="group flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/80 text-left shadow-card-soft transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
+      className="group relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white/85 p-5 text-left shadow-card-soft transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
     >
-      <div className="flex h-40 items-center justify-center bg-slate-50">
-        {club.logoUrl ? (
-          <img
-            src={club.logoUrl}
-            alt={club.nombre}
-            className="h-24 w-24 object-contain"
-          />
-        ) : (
-          <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-white text-xl font-semibold text-slate-500 shadow-sm">
-            {initials}
+      <div
+        className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent}`}
+      />
+      <div className="absolute -right-16 -top-16 h-28 w-28 rounded-full bg-league-400/10 blur-2xl" />
+
+      <div className="relative flex items-start gap-4">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600 shadow-sm">
+          {club.logoUrl ? (
+            <img
+              src={club.logoUrl}
+              alt={club.nombre}
+              className="h-10 w-10 object-contain"
+            />
+          ) : (
+            initials
+          )}
+        </div>
+
+        <div className="flex-1">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                Club
+              </div>
+              <div className="mt-1 text-base font-semibold text-slate-800">
+                {club.nombre}
+              </div>
+              <div className="mt-1 text-xs text-slate-500">
+                {club.municipio} · {club.barrio}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <StatusBadge
+                label={
+                  club.estado === "aprobado"
+                    ? "Aprobado"
+                    : "Pendiente"
+                }
+                tone={
+                  club.estado === "aprobado" ? "approved" : "pending"
+                }
+              />
+              <StatusBadge
+                label={club.pago === "pagado" ? "Pagado" : "Sin pago"}
+                tone={club.pago === "pagado" ? "paid" : "unpaid"}
+              />
+            </div>
           </div>
-        )}
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="text-xs text-slate-500">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                Presidente
+              </div>
+              <div className="mt-1 text-sm font-semibold text-slate-700">
+                {club.presidente}
+              </div>
+            </div>
+            <div className="text-xs text-slate-500">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                Contacto
+              </div>
+              <div className="mt-1 text-sm font-semibold text-slate-700">
+                {club.telefono1}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 px-5 py-4">
-        <div className="text-sm font-semibold text-slate-800">
-          {club.nombre}
-        </div>
-        <div className="text-xs text-slate-500">
-          {club.departamento}
-        </div>
-        <div className="text-xs text-slate-500">
-          Liga: {club.liga}
-        </div>
-        <div className="text-xs text-slate-500">
-          Presidente: {club.presidente}
-        </div>
-
-        <div className="mt-2 flex flex-wrap gap-2">
-          <StatusBadge
-            label={
-              club.estado === "aprobado" ? "Aprobado" : "Pendiente"
-            }
-            tone={club.estado === "aprobado" ? "approved" : "pending"}
-          />
-          <StatusBadge
-            label={club.pago === "pagado" ? "Pagado" : "Sin pago"}
-            tone={club.pago === "pagado" ? "paid" : "unpaid"}
-          />
-        </div>
+      <div className="flex items-center justify-between text-xs text-slate-400">
+        <span>Ver documentos, deportistas y entrenadores</span>
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition group-hover:bg-slate-200">
+          →
+        </span>
       </div>
     </button>
   );
