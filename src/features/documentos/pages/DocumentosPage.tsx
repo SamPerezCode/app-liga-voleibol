@@ -1,7 +1,5 @@
 import { useMemo, useState } from "react";
 import Button from "../../../ui/Button";
-import Table from "../../../ui/Table";
-import type { TableColumn } from "../../../ui/Table";
 import StatusBadge from "../../../ui/StatusBadge";
 import Pagination from "../../../ui/Pagination";
 import type { Documento } from "../types";
@@ -20,6 +18,12 @@ const DocumentosPage = () => {
     return documents.slice(start, start + pageSize);
   }, [page]);
 
+  const total = documents.length;
+  const approved = documents.filter(
+    (doc) => doc.status === "approved"
+  ).length;
+  const pending = total - approved;
+
   if (selected) {
     return (
       <DocumentoDetalle
@@ -29,51 +33,142 @@ const DocumentosPage = () => {
     );
   }
 
-  const columns: TableColumn<Documento>[] = [
-    { key: "type", label: "Tipo de Documento" },
-    {
-      key: "status",
-      label: "Estado",
-      render: (row) => (
-        <StatusBadge
-          label={row.status === "approved" ? "Aprobado" : "Pendiente"}
-          tone={row.status === "approved" ? "approved" : "pending"}
-        />
-      ),
-    },
-    {
-      key: "id",
-      label: "Ver",
-      render: (row) => (
-        <button
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
-          onClick={() => setSelected(row)}
-          aria-label="Ver documento"
-        >
-          i
-        </button>
-      ),
-    },
-  ];
-
   return (
     <section className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-league-700">
-          Documentos
-        </h1>
-        <Button className="bg-sky-600 hover:bg-sky-700">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-xl font-semibold text-league-700">
+            Documentos
+          </h1>
+          <p className="text-sm text-slate-500">
+            Control y trazabilidad de la documentacion de la liga.
+          </p>
+        </div>
+        <Button className="bg-league-600 hover:bg-league-700">
           Agregar Documento
         </Button>
+      </header>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-card-soft">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            Total
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-slate-800">
+            {total}
+          </p>
+          <p className="text-xs text-slate-500">
+            Documentos registrados
+          </p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-card-soft">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            Aprobados
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-slate-800">
+            {approved}
+          </p>
+          <p className="text-xs text-slate-500">Listos para uso</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-card-soft">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            Pendientes
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-slate-800">
+            {pending}
+          </p>
+          <p className="text-xs text-slate-500">Por validar</p>
+        </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-card-soft space-y-4">
-        <div className="hidden lg:block">
-          <Table
-            columns={columns}
-            data={pagedDocuments}
-            emptyMessage="No hay documentos registrados"
-          />
+      <div className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-card-soft">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+              Documentos cargados
+            </p>
+            <p className="mt-1 text-sm font-semibold text-slate-700">
+              Registro general
+            </p>
+          </div>
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-500">
+            {total} archivos
+          </span>
+        </div>
+
+        <div className="mt-4 hidden lg:flex flex-col gap-3">
+          {pagedDocuments.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-white/70 p-6 text-center text-sm text-slate-500">
+              No hay documentos registrados
+            </div>
+          ) : (
+            pagedDocuments.map((doc) => {
+              const metaParts = [];
+              if (doc.startDate && doc.endDate) {
+                metaParts.push(
+                  `Vigencia ${doc.startDate} - ${doc.endDate}`
+                );
+              }
+              if (doc.resolutionNumber) {
+                metaParts.push(`Resolucion ${doc.resolutionNumber}`);
+              }
+              const meta =
+                metaParts.length > 0
+                  ? metaParts.join(" · ")
+                  : "Sin detalles adicionales";
+
+              const isApproved = doc.status === "approved";
+
+              return (
+                <article
+                  key={doc.id}
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-card-soft transition hover:-translate-y-0.5 hover:shadow-card-soft"
+                >
+                  <div className="absolute inset-x-0 top-0 h-0.5 bg-league-sweep" />
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-500">
+                        DOC
+                      </div>
+                      <div>
+                        <div className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                          Documento
+                        </div>
+                        <div className="mt-1 text-sm font-semibold text-slate-800">
+                          {doc.type}
+                        </div>
+                        <div className="mt-1 text-xs text-slate-500">
+                          {meta}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <StatusBadge
+                        label={isApproved ? "Aprobado" : "Pendiente"}
+                        tone={isApproved ? "approved" : "pending"}
+                      />
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+                        onClick={() => setSelected(doc)}
+                      >
+                        Ver detalle
+                      </button>
+                      <a
+                        href={doc.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+                      >
+                        Abrir
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })
+          )}
         </div>
 
         <DocumentsCardsMobile
@@ -81,7 +176,7 @@ const DocumentosPage = () => {
           onView={setSelected}
         />
 
-        <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
           <span>
             Mostrando {pagedDocuments.length} de {documents.length}
           </span>
