@@ -72,8 +72,8 @@ const DeportistasPage = () => {
         </h1>
 
         <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-card-soft">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="relative flex-1 min-w-[240px]">
+          <div className="grid gap-3 md:grid-cols-[1.5fr_1fr_auto]">
+            <div className="relative">
               <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                 <svg
                   viewBox="0 0 24 24"
@@ -94,21 +94,23 @@ const DeportistasPage = () => {
               />
             </div>
 
-            <div className="min-w-[180px]">
-              <Select value={status} onChange={handleStatusChange}>
-                <option value="todos">Estado</option>
-                <option value="aprobado">Aprobado</option>
-                <option value="pendiente">Pendiente</option>
-              </Select>
-            </div>
+            <div className="flex items-center gap-3 md:contents">
+              <div className="flex-1 min-w-[180px]">
+                <Select value={status} onChange={handleStatusChange}>
+                  <option value="todos">Estado</option>
+                  <option value="aprobado">Aprobado</option>
+                  <option value="pendiente">Pendiente</option>
+                </Select>
+              </div>
 
-            <ResetButton
-              onClick={() => {
-                setSearch("");
-                setStatus("todos");
-                setPage(1);
-              }}
-            />
+              <ResetButton
+                onClick={() => {
+                  setSearch("");
+                  setStatus("todos");
+                  setPage(1);
+                }}
+              />
+            </div>
           </div>
 
           <p className="mt-2 text-xs text-slate-500">
