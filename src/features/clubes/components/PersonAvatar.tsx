@@ -43,6 +43,7 @@ const PersonAvatar = ({
 
   return (
     <div
+      translate="no"
       className={`${sizeStyles[size]} flex items-center justify-center rounded-xl bg-slate-100 font-semibold text-slate-500 ${className}`}
     >
       {initials}

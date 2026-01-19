@@ -30,7 +30,10 @@ const ClubCard = ({ club, onClick }: Props) => {
       <div className="absolute -right-16 -top-16 h-28 w-28 rounded-full bg-league-400/10 blur-2xl" />
 
       <div className="relative flex items-start gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600 shadow-sm">
+        <div
+          translate="no"
+          className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600 shadow-sm"
+        >
           {club.logoUrl ? (
             <img
               src={club.logoUrl}

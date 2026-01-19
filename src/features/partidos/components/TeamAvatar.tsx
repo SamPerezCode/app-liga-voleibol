@@ -47,6 +47,7 @@ const TeamAvatar = ({ team, size = "md" }: Props) => {
 
   return (
     <div
+      translate="no"
       className={`flex ${sizeClass} items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-500`}
     >
       {initials}

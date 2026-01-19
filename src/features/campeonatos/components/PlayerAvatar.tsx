@@ -28,7 +28,10 @@ const PlayerAvatar = ({ name, photoUrl }: Props) => {
   }
 
   return (
-    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-xs font-semibold text-slate-500">
+    <div
+      translate="no"
+      className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-xs font-semibold text-slate-500"
+    >
       {initials}
     </div>
   );

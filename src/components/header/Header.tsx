@@ -75,7 +75,10 @@ const Header = ({
             onClick={() => setOpen((v) => !v)}
             className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-2 py-1"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-league-700 text-sm font-semibold text-white">
+            <span
+              translate="no"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-league-700 text-sm font-semibold text-white"
+            >
               {initials}
             </span>
 

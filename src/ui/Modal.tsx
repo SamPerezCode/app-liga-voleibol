@@ -29,7 +29,17 @@ const Modal = ({ open, title, onClose, children }: ModalProps) => {
               aria-label="Cerrar"
               title="Cerrar"
             >
-              x
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12" />
+                <path d="M18 6l-12 12" />
+              </svg>
             </button>
           </div>
           <div className="px-5 py-4">{children}</div>

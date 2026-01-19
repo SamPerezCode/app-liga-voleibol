@@ -28,7 +28,10 @@ const ProfileSummary = ({ profile }: Props) => {
                 className="h-20 w-20 rounded-2xl border border-slate-200 object-cover bg-white"
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-lg font-semibold text-slate-500">
+              <div
+                translate="no"
+                className="flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-lg font-semibold text-slate-500"
+              >
                 {initials}
               </div>
             )}

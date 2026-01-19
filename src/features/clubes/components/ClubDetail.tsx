@@ -162,7 +162,11 @@ const ClubDetail = ({
                   className="h-24 w-24 object-contain"
                 />
               ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-white text-xl font-semibold text-slate-500 shadow-sm">
+                <div
+                  translate="no"
+                  className="flex h-24 w-24 items-center justify-center rounded-3xl bg-white text-xl font-semibold text-slate-500 shadow-sm"
+                >
+                  {" "}
                   {club.nombre
                     .split(" ")
                     .slice(0, 2)
