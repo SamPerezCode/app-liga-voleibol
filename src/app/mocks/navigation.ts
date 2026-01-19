@@ -5,6 +5,7 @@ export const navItems: { label: AppSection; icon: string }[] = [
   { label: "Solicitudes", icon: "/notifications.svg" },
   { label: "Clubes", icon: "/clubs.svg" },
   { label: "Deportistas", icon: "/athlete.svg" },
+  { label: "Categoria", icon: "/category.svg" },
   { label: "Entrenadores", icon: "/coach.svg" },
   { label: "Campeonatos", icon: "/championship.svg" },
   { label: "Partidos", icon: "/matches.svg" },

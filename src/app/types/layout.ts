@@ -3,6 +3,7 @@ export type AppSection =
   | "Solicitudes"
   | "Clubes"
   | "Deportistas"
+  | "Categoria"
   | "Entrenadores"
   | "Campeonatos"
   | "Partidos"

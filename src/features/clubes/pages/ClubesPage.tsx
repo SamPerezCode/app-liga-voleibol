@@ -10,6 +10,7 @@ import {
 } from "../mocks";
 import ClubCard from "../components/ClubCard";
 import ClubDetail from "../components/ClubDetail";
+import ResetButton from "../../../ui/ResetButton";
 
 const ClubesPage = () => {
   const [selectedClubId, setSelectedClubId] = useState<string | null>(
@@ -113,24 +114,13 @@ const ClubesPage = () => {
               </Select>
             </div>
 
-            <button
-              type="button"
+            <ResetButton
               onClick={() => {
                 setSearch("");
                 setStatus("todos");
                 setPage(1);
               }}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-700"
-              aria-label="Restablecer filtros"
-              title="Restablecer filtros"
-            >
-              <img
-                src="/refresh.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-5 w-5 opacity-90 filter brightness-75 contrast-125"
-              />
-            </button>
+            />
           </div>
 
           <p className="mt-2 text-xs text-slate-500">
