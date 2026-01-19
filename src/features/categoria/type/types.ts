@@ -1,8 +1,7 @@
 export type Categoria = {
   id: string;
   nombre: string;
-  descripcion: string;
-  clubsCount: number;
-  athletesCount: number;
+  edadMin: number;
+  edadMax: number;
   status: "activa" | "inactiva";
 };
