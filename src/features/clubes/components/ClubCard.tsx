@@ -22,7 +22,7 @@ const ClubCard = ({ club, onClick }: Props) => {
   return (
     <button
       onClick={onClick}
-      className="group relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white/85 p-5 text-left shadow-card-soft transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
+      className="group relative flex h-full w-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white/85 p-5 text-left shadow-card-soft transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
     >
       <div
         className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent}`}
@@ -43,19 +43,17 @@ const ClubCard = ({ club, onClick }: Props) => {
         </div>
 
         <div className="flex-1">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                Club
-              </div>
-              <div className="mt-1 text-base font-semibold text-slate-800">
-                {club.nombre}
-              </div>
-              <div className="mt-1 text-xs text-slate-500">
-                {club.municipio} · {club.barrio}
-              </div>
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+              Club
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="mt-1 text-base font-semibold text-slate-800">
+              {club.nombre}
+            </div>
+            <div className="mt-1 text-xs text-slate-500">
+              {club.municipio} - {club.barrio}
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
               <StatusBadge
                 label={
                   club.estado === "aprobado"
@@ -94,10 +92,15 @@ const ClubCard = ({ club, onClick }: Props) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-xs text-slate-400">
+      <div className="mt-auto flex items-center justify-between text-xs text-slate-400">
         <span>Ver documentos, deportistas y entrenadores</span>
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition group-hover:bg-slate-200">
-          →
+          <img
+            src="/arrow-next.svg"
+            alt="Ver documentos, deportistas y entrenadores"
+            aria-hidden="true"
+            className="h-5 w-5 opacity-90 filter brightness-75 contrast-125"
+          />
         </span>
       </div>
     </button>

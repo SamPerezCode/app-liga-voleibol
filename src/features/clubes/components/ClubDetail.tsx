@@ -191,9 +191,6 @@ const ClubDetail = ({
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
-              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                Liga
-              </div>
               <div className="mt-1 text-sm font-semibold text-slate-800">
                 {club.liga}
               </div>
