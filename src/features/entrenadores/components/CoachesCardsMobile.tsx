@@ -66,7 +66,7 @@ const CoachesCardsMobile = ({ rows, onView }: Props) => {
 
           <div className="mt-3">
             <Button
-              variant="outline"
+              variant="info"
               size="sm"
               onClick={() => onView(row.id)}
             >

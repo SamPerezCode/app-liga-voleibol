@@ -230,23 +230,20 @@ const CategoriaPage = () => {
       render: (row) => (
         <div className="flex flex-wrap gap-2">
           <Button
-            type="button"
-            variant="outline"
+            variant="info"
             size="sm"
             onClick={() => setSelectedId(row.id)}
           >
             Ver
           </Button>
           <Button
-            type="button"
-            variant="outline"
+            variant="warning"
             size="sm"
             onClick={() => openEdit(row)}
           >
             Editar
           </Button>
           <Button
-            type="button"
             variant="danger"
             size="sm"
             onClick={() => handleDelete(row)}

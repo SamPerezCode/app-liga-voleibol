@@ -1,4 +1,6 @@
 import StatusBadge from "../../../ui/StatusBadge";
+import Button from "../../../ui/Button";
+
 import type { Documento } from "../types";
 
 type Props = {
@@ -48,13 +50,14 @@ const DocumentsCardsMobile = ({ items, onView }: Props) => {
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-              <button
-                type="button"
-                className="inline-flex flex-1 items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+              <Button
+                variant="info"
+                size="sm"
+                className="flex-1"
                 onClick={() => onView(doc)}
               >
                 Ver detalle
-              </button>
+              </Button>
               <a
                 href={doc.fileUrl}
                 target="_blank"

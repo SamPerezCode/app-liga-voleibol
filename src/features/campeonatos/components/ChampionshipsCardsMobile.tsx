@@ -1,5 +1,6 @@
 import type { Championship } from "../types";
 import StatusBadge from "../../../ui/StatusBadge";
+import Button from "../../../ui/Button";
 
 type Props = {
   rows: Championship[];
@@ -35,13 +36,14 @@ const ChampionshipsCardsMobile = ({ rows, onView }: Props) => {
             <StatusBadge label={row.status} tone="info" />
           </div>
           <div className="mt-3">
-            <button
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-600"
+            <Button
+              variant="info"
+              size="sm"
               onClick={() => onView(row.id)}
               title="Ver detalle"
             >
               Ver detalle
-            </button>
+            </Button>
           </div>
         </div>
       ))}

@@ -63,23 +63,20 @@ const CategoriasCardsMobile = ({
               <div className="flex items-center gap-2"></div>
               <div className="flex items-center gap-2">
                 <Button
-                  type="button"
-                  variant="outline"
+                  variant="info"
                   size="sm"
                   onClick={() => onView(row)}
                 >
                   Ver
                 </Button>
                 <Button
-                  type="button"
-                  variant="outline"
+                  variant="warning"
                   size="sm"
                   onClick={() => onEdit(row)}
                 >
                   Editar
                 </Button>
                 <Button
-                  type="button"
                   variant="danger"
                   size="sm"
                   onClick={() => onDelete(row)}
