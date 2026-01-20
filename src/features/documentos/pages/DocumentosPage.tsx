@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import Button from "../../../ui/Button";
+import ButtonLink from "../../../ui/ButtonLink";
 import StatusBadge from "../../../ui/StatusBadge";
 import Pagination from "../../../ui/Pagination";
 import type { Documento } from "../types";
@@ -148,21 +149,25 @@ const DocumentosPage = () => {
                         label={isApproved ? "Aprobado" : "Pendiente"}
                         tone={isApproved ? "approved" : "pending"}
                       />
-                      <button
+                      <Button
                         type="button"
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+                        variant="info"
+                        size="sm"
+                        className="rounded-full"
                         onClick={() => setSelected(doc)}
                       >
                         Ver detalle
-                      </button>
-                      <a
+                      </Button>
+                      <ButtonLink
                         href={doc.fileUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full"
                       >
                         Abrir
-                      </a>
+                      </ButtonLink>
                     </div>
                   </div>
                 </article>

@@ -25,11 +25,11 @@ const stats = [
     chip: "bg-sky-100/80 text-sky-800",
   },
   {
-    label: "Campeonatos",
+    label: "Torneos",
     value: 3,
     note: "En curso",
     icon: "/championship.svg",
-    section: "Campeonatos",
+    section: "Torneos",
     accent: "from-emerald-400 via-green-500 to-emerald-600",
     glow: "bg-emerald-500/15",
     chip: "bg-emerald-100/80 text-emerald-800",
@@ -65,8 +65,8 @@ const Home = ({ onNavigate }: HomeProps) => {
               Gestion deportiva
             </h1>
             <p className="mt-3 text-sm text-slate-500">
-              Consulta el campeonato actual, proximos partidos y el
-              estado de la temporada en tiempo real.
+              Consulta el torneo actual, proximos partidos y el estado
+              de la temporada en tiempo real.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">
@@ -88,7 +88,7 @@ const Home = ({ onNavigate }: HomeProps) => {
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-white/70 p-4">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                  Campeonato activo
+                  Torneo activo
                 </div>
                 <div className="mt-2 text-sm font-semibold text-slate-800">
                   Liga Departamental

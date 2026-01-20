@@ -25,14 +25,14 @@ const Contain = ({ activeSection, onNavigate }: Props) => {
       return <ClubesPage />;
     case "Deportistas":
       return <DeportistasPage />;
-    case "Categoria":
-      return <CategoriaPage />;
     case "Entrenadores":
       return <EntrenadoresPage />;
-    case "Campeonatos":
+    case "Torneos":
       return <CampeonatosPage />;
     case "Partidos":
       return <PartidosPage />;
+    case "Categoria":
+      return <CategoriaPage />;
     case "Documentos":
       return <DocumentosPage />;
     case "Pagos":

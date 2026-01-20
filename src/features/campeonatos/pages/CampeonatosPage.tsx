@@ -57,7 +57,7 @@ const CampeonatosPage = () => {
   return (
     <section className="space-y-6">
       <h1 className="text-xl font-semibold text-league-700">
-        Campeonatos
+        Torneos
       </h1>
 
       <button
@@ -69,7 +69,7 @@ const CampeonatosPage = () => {
           }))
         }
       >
-        Campeonatos Inscritos
+        Torneos Inscritos
         <span>{openSection.inscritos ? "▲" : "▼"}</span>
       </button>
       {openSection.inscritos && (
@@ -124,7 +124,7 @@ const CampeonatosPage = () => {
           }))
         }
       >
-        Campeonatos No Inscritos
+        Torneos No Inscritos
         <span>{openSection.noInscritos ? "▲" : "▼"}</span>
       </button>
       {openSection.noInscritos && (

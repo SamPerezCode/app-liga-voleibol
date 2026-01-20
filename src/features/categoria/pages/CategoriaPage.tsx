@@ -237,7 +237,7 @@ const CategoriaPage = () => {
             Ver
           </Button>
           <Button
-            variant="warning"
+            variant="edit"
             size="sm"
             onClick={() => openEdit(row)}
           >

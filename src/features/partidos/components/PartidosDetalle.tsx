@@ -122,7 +122,7 @@ const PartidosDetalle = ({
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+      <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
         {/* Sub-nav */}
         <div className="space-y-3">
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
@@ -131,26 +131,8 @@ const PartidosDetalle = ({
                 Navegacion
               </div>
 
-              {/* Mobile select */}
-              <div className="mt-3 lg:hidden">
-                <select
-                  value={tab}
-                  onChange={(e) =>
-                    setTab(e.target.value as "marcadores" | "cuadro")
-                  }
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
-                >
-                  <option value="marcadores">
-                    Marcadores ({resultsCount})
-                  </option>
-                  <option value="cuadro">
-                    Cuadro de Enfrentamientos ({bracketCount})
-                  </option>
-                </select>
-              </div>
-
               {/* Desktop nav */}
-              <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+              <div className="mt-3 flex flex-col gap-2">
                 {[
                   {
                     id: "marcadores",
@@ -171,7 +153,7 @@ const PartidosDetalle = ({
                       onClick={() =>
                         setTab(item.id as "marcadores" | "cuadro")
                       }
-                      className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
                         active
                           ? "bg-league-700 text-white shadow-md"
                           : "bg-white text-slate-600 hover:bg-slate-50"

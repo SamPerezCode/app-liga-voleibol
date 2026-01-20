@@ -70,7 +70,7 @@ const CategoriasCardsMobile = ({
                   Ver
                 </Button>
                 <Button
-                  variant="warning"
+                  variant="edit"
                   size="sm"
                   onClick={() => onEdit(row)}
                 >

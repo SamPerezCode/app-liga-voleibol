@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { AnchorHTMLAttributes } from "react";
 
 type ButtonVariant =
   | "primary"
@@ -7,9 +7,10 @@ type ButtonVariant =
   | "danger"
   | "info"
   | "edit";
+
 type ButtonSize = "sm" | "md";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
 };
@@ -24,23 +25,24 @@ const variantStyles: Record<ButtonVariant, string> = {
   info: "border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100",
   edit: "border border-accent-blue/30 bg-accent-blue/10 text-accent-blue hover:bg-accent-blue/20",
 };
+
 const sizeStyles: Record<ButtonSize, string> = {
   sm: "px-3 py-1.5 text-xs",
   md: "px-4 py-2 text-sm",
 };
 
-const Button = ({
-  variant = "primary",
+const ButtonLink = ({
+  variant = "outline",
   size = "md",
   className = "",
   ...props
-}: ButtonProps) => {
+}: ButtonLinkProps) => {
   return (
-    <button
+    <a
       className={`inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       {...props}
     />
   );
 };
 
-export default Button;
+export default ButtonLink;

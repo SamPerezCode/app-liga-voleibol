@@ -1,5 +1,6 @@
 import StatusBadge from "../../../ui/StatusBadge";
 import Button from "../../../ui/Button";
+import ButtonLink from "../../../ui/ButtonLink";
 
 import type { Documento } from "../types";
 
@@ -58,14 +59,16 @@ const DocumentsCardsMobile = ({ items, onView }: Props) => {
               >
                 Ver detalle
               </Button>
-              <a
+              <ButtonLink
                 href={doc.fileUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex flex-1 items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+                variant="outline"
+                size="sm"
+                className="flex-1 rounded-full"
               >
                 Abrir
-              </a>
+              </ButtonLink>
             </div>
           </article>
         );
