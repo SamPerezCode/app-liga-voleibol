@@ -21,7 +21,7 @@ const PerfilPage = () => {
     <section className="space-y-6">
       <div className="grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)]">
         <div className="space-y-3">
-          <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft lg:sticky lg:top-6">
+          <div className="hidden lg:block rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft lg:sticky lg:top-6">
             <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
               <div className="text-[11px] uppercase tracking-[0.25em] text-slate-400">
                 Navegacion

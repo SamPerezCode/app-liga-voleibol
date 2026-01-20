@@ -13,6 +13,7 @@ export type Coach = {
   league: string;
   club: string;
   category: string;
+  categoryId: string;
   resolutionNumber: string;
   status: CoachStatus;
   registeredAt: string;

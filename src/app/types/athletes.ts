@@ -19,6 +19,7 @@ export type Athlete = {
   documentNumber: string;
   club: string;
   category: string;
+  categoryId: string;
   photoUrl?: string;
   status: "aprobado" | "pendiente";
   payment: "pagado" | "pendiente";

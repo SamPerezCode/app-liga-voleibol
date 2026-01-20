@@ -3,6 +3,7 @@ import Button from "../../../ui/Button";
 
 type Props = {
   rows: Categoria[];
+  onView: (row: Categoria) => void;
   onEdit: (row: Categoria) => void;
   onDelete: (row: Categoria) => void;
 };
@@ -12,7 +13,17 @@ const statusStyles: Record<Categoria["status"], string> = {
   inactiva: "bg-slate-100 text-slate-600",
 };
 
-const CategoriasCardsMobile = ({ rows, onEdit, onDelete }: Props) => {
+const formatRangeLabel = (item: Categoria) =>
+  item.edadMax >= 99
+    ? `Edad ${item.edadMin}+`
+    : `Edad ${item.edadMin} - ${item.edadMax}`;
+
+const CategoriasCardsMobile = ({
+  rows,
+  onView,
+  onEdit,
+  onDelete,
+}: Props) => {
   if (rows.length === 0) {
     return (
       <div className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-4 text-sm text-slate-500 md:hidden">
@@ -34,7 +45,7 @@ const CategoriasCardsMobile = ({ rows, onEdit, onDelete }: Props) => {
                 {row.nombre}
               </div>
               <div className="mt-1 text-xs text-slate-500">
-                Edad {row.edadMin} - {row.edadMax}
+                {formatRangeLabel(row)}
               </div>
             </div>
             <span
@@ -49,21 +60,16 @@ const CategoriasCardsMobile = ({ rows, onEdit, onDelete }: Props) => {
               Ver mas
             </summary>
             <div className="mt-3 space-y-3">
+              <div className="flex items-center gap-2"></div>
               <div className="flex items-center gap-2">
-                <span className="w-24 text-slate-400">Rango</span>
-                <span>
-                  {row.edadMin} - {row.edadMax} anos
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-24 text-slate-400">Estado</span>
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyles[row.status]}`}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onView(row)}
                 >
-                  {row.status === "activa" ? "Activa" : "Inactiva"}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
+                  Ver
+                </Button>
                 <Button
                   type="button"
                   variant="outline"

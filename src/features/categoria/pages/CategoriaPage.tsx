@@ -6,9 +6,13 @@ import Table from "../../../ui/Table";
 import type { TableColumn } from "../../../ui/Table";
 import Modal from "../../../ui/Modal";
 import ResetButton from "../../../ui/ResetButton";
+import Pagination from "../../../ui/Pagination";
 import CategoriasCardsMobile from "../components/CategoriasCardsMobile";
+import CategoriaDetail from "../components/CategoriaDetail";
 import { categorias } from "../mocks/mocks";
 import type { Categoria } from "../type/types";
+import { athletes } from "../../../app/mocks/athletes";
+import { coaches } from "../../../app/mocks/coaches";
 
 const statusStyles: Record<Categoria["status"], string> = {
   activa: "bg-emerald-100 text-emerald-700",
@@ -21,6 +25,34 @@ const emptyForm = {
   edadMax: "",
 };
 
+const normalizeText = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const formatRangeLabel = (item: Categoria) =>
+  item.edadMax >= 99
+    ? `Edad ${item.edadMin}+`
+    : `Edad ${item.edadMin} - ${item.edadMax}`;
+
+const isAgeInRange = (
+  birthDate: string,
+  min: number,
+  max: number
+) => {
+  const birth = new Date(birthDate);
+  if (Number.isNaN(birth.getTime())) return false;
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const hasNotHadBirthday =
+    today.getMonth() < birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() &&
+      today.getDate() < birth.getDate());
+
+  if (hasNotHadBirthday) age -= 1;
+
+  const maxValue = max >= 99 ? Number.POSITIVE_INFINITY : max;
+  return age >= min && age <= maxValue;
+};
+
 const CategoriaPage = () => {
   const [items, setItems] = useState<Categoria[]>(categorias);
   const [search, setSearch] = useState("");
@@ -30,6 +62,40 @@ const CategoriaPage = () => {
   const [editing, setEditing] = useState<Categoria | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState("");
+
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const pageSize = 6;
+  const [page, setPage] = useState(1);
+
+  const selectedCategoria = selectedId
+    ? (items.find((item) => item.id === selectedId) ?? null)
+    : null;
+
+  const athletesForCategory = useMemo(() => {
+    if (!selectedCategoria) return [];
+    return athletes.filter((athlete) => {
+      if (athlete.categoryId) {
+        return athlete.categoryId === selectedCategoria.id;
+      }
+      return isAgeInRange(
+        athlete.birthDate,
+        selectedCategoria.edadMin,
+        selectedCategoria.edadMax
+      );
+    });
+  }, [selectedCategoria]);
+
+  const coachesForCategory = useMemo(() => {
+    if (!selectedCategoria) return [];
+    return coaches.filter((coach) => {
+      if (coach.categoryId) {
+        return coach.categoryId === selectedCategoria.id;
+      }
+      return normalizeText(coach.category).includes(
+        normalizeText(selectedCategoria.nombre)
+      );
+    });
+  }, [selectedCategoria]);
 
   const openCreate = () => {
     setEditing(null);
@@ -111,7 +177,7 @@ const CategoriaPage = () => {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return items.filter((item) => {
-      const rangeText = `${item.edadMin}-${item.edadMax}`;
+      const rangeText = formatRangeLabel(item).toLowerCase();
       const matchesSearch =
         q.length === 0 ||
         item.nombre.toLowerCase().includes(q) ||
@@ -124,17 +190,23 @@ const CategoriaPage = () => {
     });
   }, [items, search, status]);
 
+  const paged = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, page]);
+
   const columns: TableColumn<Categoria>[] = [
     {
       key: "nombre",
       label: "Categoria",
+      className: "w-[55%]",
       render: (row) => (
         <div>
           <div className="text-sm font-semibold text-slate-700">
             {row.nombre}
           </div>
           <div className="mt-1 text-xs text-slate-400">
-            Edad {row.edadMin} - {row.edadMax}
+            {formatRangeLabel(row)}
           </div>
         </div>
       ),
@@ -142,6 +214,7 @@ const CategoriaPage = () => {
     {
       key: "status",
       label: "Estado",
+      className: "w-[15%]",
       render: (row) => (
         <span
           className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyles[row.status]}`}
@@ -153,8 +226,17 @@ const CategoriaPage = () => {
     {
       key: "id",
       label: "Acciones",
+      className: "w-[30%]",
       render: (row) => (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setSelectedId(row.id)}
+          >
+            Ver
+          </Button>
           <Button
             type="button"
             variant="outline"
@@ -175,6 +257,17 @@ const CategoriaPage = () => {
       ),
     },
   ];
+
+  if (selectedCategoria) {
+    return (
+      <CategoriaDetail
+        categoria={selectedCategoria}
+        athletes={athletesForCategory}
+        coaches={coachesForCategory}
+        onBack={() => setSelectedId(null)}
+      />
+    );
+  }
 
   return (
     <section className="space-y-6">
@@ -214,7 +307,10 @@ const CategoriaPage = () => {
               <Input
                 placeholder="Buscar categoria"
                 value={search}
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setPage(1);
+                }}
                 className="pl-9"
               />
             </div>
@@ -223,7 +319,10 @@ const CategoriaPage = () => {
               <div className="flex-1 min-w-[180px]">
                 <Select
                   value={status}
-                  onChange={(event) => setStatus(event.target.value)}
+                  onChange={(event) => {
+                    setStatus(event.target.value);
+                    setPage(1);
+                  }}
                 >
                   <option value="todos">Estado</option>
                   <option value="activa">Activa</option>
@@ -234,6 +333,7 @@ const CategoriaPage = () => {
                 onClick={() => {
                   setSearch("");
                   setStatus("todos");
+                  setPage(1);
                 }}
               />
             </div>
@@ -249,16 +349,32 @@ const CategoriaPage = () => {
         <div className="hidden md:block">
           <Table
             columns={columns}
-            data={filtered}
+            data={paged}
             emptyMessage="No hay categorias registradas"
           />
         </div>
 
         <CategoriasCardsMobile
-          rows={filtered}
+          rows={paged}
+          onView={(row) => setSelectedId(row.id)}
           onEdit={openEdit}
           onDelete={handleDelete}
         />
+
+        <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
+          <span>
+            Mostrando {paged.length} de {filtered.length}
+          </span>
+
+          {filtered.length > pageSize && (
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              total={filtered.length}
+              onPageChange={setPage}
+            />
+          )}
+        </div>
       </div>
 
       <Modal
