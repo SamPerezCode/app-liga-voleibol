@@ -72,9 +72,8 @@ const Sidebar = ({
           return (
             <button
               key={item.label}
-              onClick={() => open && onSelect(item.label)}
-              tabIndex={open ? 0 : -1}
-              aria-disabled={!open}
+              onClick={() => onSelect(item.label)}
+              tabIndex={0}
               className={`flex items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition ${
                 open
                   ? "w-full justify-start"
@@ -83,7 +82,7 @@ const Sidebar = ({
                 isActive
                   ? "bg-white/20 ring-1 ring-white/30"
                   : "hover:bg-white/10"
-              } ${open ? "" : "pointer-events-none"}`}
+              }`}
             >
               <img
                 src={item.icon}

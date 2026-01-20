@@ -37,13 +37,13 @@ const AppShell = () => {
         activeItem={activeSection}
         onSelect={setActiveSection}
       />
-      {sidebarOpen && (
+      {/* {sidebarOpen && (
         <div
           className="fixed inset-0 z-30 hidden lg:block bg-transparent"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
-      )}
+      )} */}
 
       <MobileSidebar
         open={mobileOpen}
