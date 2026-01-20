@@ -24,7 +24,8 @@ const CoachDetail = ({ coach, onBack }: Props) => {
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-card-soft">
-        <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+        <div className="grid gap-6 xl:grid-cols-[220px_1fr]">
+          {" "}
           {/* Sub-nav */}
           <div className="space-y-3">
             <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
@@ -33,20 +34,7 @@ const CoachDetail = ({ coach, onBack }: Props) => {
                   Navegacion
                 </div>
 
-                <div className="mt-3 lg:hidden">
-                  <select
-                    value={tab}
-                    onChange={(e) =>
-                      setTab(e.target.value as "resumen" | "carnet")
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
-                  >
-                    <option value="resumen">Resumen</option>
-                    <option value="carnet">Carnet</option>
-                  </select>
-                </div>
-
-                <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+                <div className="mt-3 flex flex-col gap-2">
                   {[
                     { id: "resumen", label: "Resumen" },
                     { id: "carnet", label: "Carnet" },
@@ -73,7 +61,6 @@ const CoachDetail = ({ coach, onBack }: Props) => {
               </div>
             </div>
           </div>
-
           {/* Panel */}
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
             <div className="rounded-xl border border-slate-200 bg-white/80 p-4 space-y-4">

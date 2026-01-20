@@ -24,7 +24,7 @@ const AthleteDetail = ({ athlete, onBack }: Props) => {
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-card-soft">
-        <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+        <div className="grid gap-6 xl:grid-cols-[220px_1fr]">
           {/* Sub-nav */}
           <div className="space-y-3">
             <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
@@ -33,22 +33,8 @@ const AthleteDetail = ({ athlete, onBack }: Props) => {
                   Navegacion
                 </div>
 
-                {/* Mobile select */}
-                <div className="mt-3 lg:hidden">
-                  <select
-                    value={tab}
-                    onChange={(e) =>
-                      setTab(e.target.value as "resumen" | "carnet")
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
-                  >
-                    <option value="resumen">Resumen</option>
-                    <option value="carnet">Carnet</option>
-                  </select>
-                </div>
-
                 {/* Desktop nav */}
-                <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+                <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft lg:sticky lg:top-6">
                   {[
                     { id: "resumen", label: "Resumen" },
                     { id: "carnet", label: "Carnet" },
@@ -61,7 +47,7 @@ const AthleteDetail = ({ athlete, onBack }: Props) => {
                         onClick={() =>
                           setTab(item.id as "resumen" | "carnet")
                         }
-                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                        className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
                           active
                             ? "bg-league-700 text-white shadow-md"
                             : "bg-white text-slate-600 hover:bg-slate-50"

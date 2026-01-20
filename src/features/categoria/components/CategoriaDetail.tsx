@@ -102,7 +102,7 @@ const CategoriaDetail = ({
         <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full bg-league-400/10 blur-3xl" />
         <div className="absolute -left-24 bottom-0 h-40 w-40 rounded-full bg-emerald-200/25 blur-3xl" />
 
-        <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+        <div className="grid gap-6 xl:grid-cols-[240px_1fr]">
           <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
             <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
               Categoria
@@ -158,29 +158,14 @@ const CategoriaDetail = ({
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+      <div className="grid gap-6 xl:grid-cols-[220px_1fr]">
         <div className="space-y-3">
           <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
             <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
               Navegacion
             </div>
 
-            <div className="mt-3 lg:hidden">
-              <select
-                value={tab}
-                onChange={(e) => setTab(e.target.value as DetailTab)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
-              >
-                <option value="athletes">
-                  Deportistas ({athletes.length})
-                </option>
-                <option value="coaches">
-                  Entrenadores ({coaches.length})
-                </option>
-              </select>
-            </div>
-
-            <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+            <div className="mt-3 flex flex-col gap-2">
               {[
                 {
                   id: "athletes",

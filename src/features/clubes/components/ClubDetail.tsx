@@ -152,7 +152,7 @@ const ClubDetail = ({
         <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full bg-league-400/10 blur-3xl" />
         <div className="absolute -left-24 bottom-0 h-40 w-40 rounded-full bg-emerald-200/25 blur-3xl" />
 
-        <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+        <div className="grid gap-6 xl:grid-cols-[220px_1fr]">
           <div className="space-y-4">
             <div className="flex items-center justify-center rounded-3xl bg-slate-50 p-6">
               {club.logoUrl ? (
@@ -282,7 +282,7 @@ const ClubDetail = ({
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+      <div className="grid gap-6 xl:grid-cols-[220px_1fr]">
         {/* Sub-nav */}
         <div className="space-y-3">
           <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
@@ -290,27 +290,8 @@ const ClubDetail = ({
               Navegacion
             </div>
 
-            {/* Mobile select */}
-            <div className="mt-3 lg:hidden">
-              <select
-                value={tab}
-                onChange={(e) => setTab(e.target.value as DetailTab)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
-              >
-                <option value="documents">
-                  Documentos ({documents.length})
-                </option>
-                <option value="athletes">
-                  Deportistas ({athletes.length})
-                </option>
-                <option value="coaches">
-                  Entrenadores ({coaches.length})
-                </option>
-              </select>
-            </div>
-
             {/* Desktop nav */}
-            <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+            <div className="mt-3 flex flex-col gap-2">
               {[
                 {
                   id: "documents",

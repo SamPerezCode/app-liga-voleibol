@@ -19,9 +19,9 @@ const PerfilPage = () => {
 
   return (
     <section className="space-y-6">
-      <div className="grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)]">
+      <div className="grid gap-5 xl:grid-cols-[240px_minmax(0,1fr)]">
         <div className="space-y-3">
-          <div className="hidden lg:block rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft lg:sticky lg:top-6">
+          <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft lg:sticky lg:top-6">
             <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
               <div className="text-[11px] uppercase tracking-[0.25em] text-slate-400">
                 Navegacion
@@ -49,25 +49,6 @@ const PerfilPage = () => {
                   Cambiar contrasena
                 </button>
               </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft lg:hidden">
-            <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
-              <label className="text-[11px] uppercase tracking-[0.25em] text-slate-400">
-                Navegacion
-              </label>
-              <select
-                value={tab}
-                onChange={(event) =>
-                  setTab(event.target.value as Tab)
-                }
-                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
-              >
-                <option value="resumen">Resumen</option>
-                <option value="editar">Editar perfil</option>
-                <option value="password">Cambiar contrasena</option>
-              </select>
             </div>
           </div>
         </div>
