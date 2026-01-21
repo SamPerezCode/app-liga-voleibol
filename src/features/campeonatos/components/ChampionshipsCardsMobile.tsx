@@ -1,13 +1,35 @@
-import type { Championship } from "../types";
+import type { Championship, ChampionshipStatus } from "../types";
 import StatusBadge from "../../../ui/StatusBadge";
 import Button from "../../../ui/Button";
 
 type Props = {
   rows: Championship[];
-  onView: (id: string) => void;
+  onView?: (id: string) => void;
+  onEdit?: (row: Championship) => void;
+  onDelete?: (row: Championship) => void;
 };
 
-const ChampionshipsCardsMobile = ({ rows, onView }: Props) => {
+const statusLabel: Record<ChampionshipStatus, string> = {
+  "en-curso": "En curso",
+  programado: "Programado",
+  finalizado: "Finalizado",
+};
+
+const statusTone: Record<
+  ChampionshipStatus,
+  "approved" | "pending" | "info"
+> = {
+  "en-curso": "approved",
+  programado: "pending",
+  finalizado: "info",
+};
+
+const ChampionshipsCardsMobile = ({
+  rows,
+  onView,
+  onEdit,
+  onDelete,
+}: Props) => {
   if (rows.length === 0) {
     return (
       <div className="md:hidden rounded-xl border border-slate-200 bg-white/80 p-4 text-xs text-slate-500">
@@ -15,6 +37,8 @@ const ChampionshipsCardsMobile = ({ rows, onView }: Props) => {
       </div>
     );
   }
+
+  const showExtraActions = Boolean(onEdit || onDelete);
 
   return (
     <div className="md:hidden space-y-3">
@@ -33,18 +57,60 @@ const ChampionshipsCardsMobile = ({ rows, onView }: Props) => {
             <span>
               {row.startDate} / {row.endDate}
             </span>
-            <StatusBadge label={row.status} tone="info" />
+            <StatusBadge
+              label={statusLabel[row.status]}
+              tone={statusTone[row.status]}
+            />
           </div>
-          <div className="mt-3">
-            <Button
-              variant="info"
-              size="sm"
-              onClick={() => onView(row.id)}
-              title="Ver detalle"
-            >
-              Ver detalle
-            </Button>
-          </div>
+
+          {showExtraActions ? (
+            <details className="mt-3 text-xs text-slate-600">
+              <summary className="cursor-pointer text-league-700">
+                Ver mas
+              </summary>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {onView && (
+                  <Button
+                    variant="info"
+                    size="sm"
+                    onClick={() => onView(row.id)}
+                  >
+                    Ver inscripciones
+                  </Button>
+                )}
+                {onEdit && (
+                  <Button
+                    variant="edit"
+                    size="sm"
+                    onClick={() => onEdit(row)}
+                  >
+                    Editar
+                  </Button>
+                )}
+                {onDelete && (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => onDelete(row)}
+                  >
+                    Eliminar
+                  </Button>
+                )}
+              </div>
+            </details>
+          ) : (
+            onView && (
+              <div className="mt-3">
+                <Button
+                  variant="info"
+                  size="sm"
+                  onClick={() => onView(row.id)}
+                >
+                  Ver inscripciones
+                </Button>
+              </div>
+            )
+          )}
         </div>
       ))}
     </div>

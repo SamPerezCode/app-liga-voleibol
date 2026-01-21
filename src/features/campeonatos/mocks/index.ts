@@ -1,5 +1,6 @@
 import type {
   Championship,
+  ChampionshipClubRegistration,
   ChampionshipPlayer,
   ChampionshipRegistration,
 } from "../types";
@@ -14,6 +15,7 @@ export const championships: Championship[] = [
     category: "Sub-15 (2010-2011)",
     status: "finalizado",
     registered: true,
+    enrollmentOpen: false,
   },
   {
     id: "ch-002",
@@ -24,6 +26,7 @@ export const championships: Championship[] = [
     category: "Sub-19 (2006-2007)",
     status: "finalizado",
     registered: true,
+    enrollmentOpen: false,
   },
   {
     id: "ch-003",
@@ -34,6 +37,7 @@ export const championships: Championship[] = [
     category: "Mayores (2003 hacia atras)",
     status: "finalizado",
     registered: true,
+    enrollmentOpen: false,
   },
   {
     id: "ch-004",
@@ -44,8 +48,33 @@ export const championships: Championship[] = [
     category: "Sub-17 (2008-2009)",
     status: "programado",
     registered: false,
+    enrollmentOpen: true,
   },
 ];
+
+export const championshipClubRegistrations: ChampionshipClubRegistration[] =
+  [
+    {
+      id: "cc-001",
+      championshipId: "ch-001",
+      clubId: "club-001",
+    },
+    {
+      id: "cc-002",
+      championshipId: "ch-001",
+      clubId: "club-002",
+    },
+    {
+      id: "cc-003",
+      championshipId: "ch-002",
+      clubId: "club-001",
+    },
+    {
+      id: "cc-004",
+      championshipId: "ch-004",
+      clubId: "club-003",
+    },
+  ];
 
 export const registrations: ChampionshipRegistration[] = [
   {
@@ -69,7 +98,7 @@ export const championshipPlayers: ChampionshipPlayer[] = [
     fullName: "Evelyn Galvis Quintero",
     documentNumber: "1066289576",
     birthDate: "2011-06-02",
-    club: "Club Deportivo Alpha Voley",
+    club: "Club de Voleibol Academia Mas Voley",
     category: "Sub-15 (2010-2011)",
     position: "Armador",
     status: "aprobado",
@@ -82,7 +111,7 @@ export const championshipPlayers: ChampionshipPlayer[] = [
     fullName: "Nathalya Isabel Arzuaga Lopez",
     documentNumber: "1067613473",
     birthDate: "2010-12-05",
-    club: "Club Deportivo Academia Mas Voley",
+    club: "Club Deportivo Valkiria",
     category: "Sub-15 (2010-2011)",
     position: "Punta/Receptor",
     status: "aprobado",
@@ -95,7 +124,7 @@ export const championshipPlayers: ChampionshipPlayer[] = [
     fullName: "Sharith Garcia Musa",
     documentNumber: "1066287412",
     birthDate: "2010-07-17",
-    club: "Club Deportivo Alpha Voley",
+    club: "Club de Voleibol Academia Mas Voley",
     category: "Sub-15 (2010-2011)",
     position: "Libero",
     status: "aprobado",

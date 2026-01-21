@@ -12,6 +12,7 @@ export type Championship = {
   category: string;
   status: ChampionshipStatus;
   registered: boolean;
+  enrollmentOpen: boolean;
 };
 
 export type ChampionshipRegistration = {
@@ -39,4 +40,10 @@ export type ChampionshipPlayer = {
   status: "aprobado" | "pendiente";
   jerseyNumber?: string;
   photoUrl?: string;
+};
+
+export type ChampionshipClubRegistration = {
+  id: string;
+  championshipId: string;
+  clubId: string;
 };

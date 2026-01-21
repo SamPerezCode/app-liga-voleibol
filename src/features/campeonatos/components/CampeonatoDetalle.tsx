@@ -1,181 +1,482 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type {
+  Championship,
   ChampionshipPlayer,
-  ChampionshipRegistration,
+  ChampionshipStatus,
 } from "../types";
-import { championships } from "../mocks";
+import type { Club } from "../../clubes/types";
 import Button from "../../../ui/Button";
 import Modal from "../../../ui/Modal";
+import Table from "../../../ui/Table";
+import type { TableColumn } from "../../../ui/Table";
+import StatusBadge from "../../../ui/StatusBadge";
 import PlayersTable from "./PlayersTable";
 import PlayerAvatar from "./PlayerAvatar";
 
 type DetailProps = {
-  championshipId: string;
-  registration?: ChampionshipRegistration;
+  championship: Championship;
+  clubs: Club[];
+  registeredClubIds: string[];
   players: ChampionshipPlayer[];
   onBack: () => void;
 };
 
-type DetailTab = "pre" | "ins";
+const statusLabel: Record<ChampionshipStatus, string> = {
+  "en-curso": "En curso",
+  programado: "Programado",
+  finalizado: "Finalizado",
+};
+
+const statusTone: Record<
+  ChampionshipStatus,
+  "approved" | "pending" | "info"
+> = {
+  "en-curso": "approved",
+  programado: "pending",
+  finalizado: "info",
+};
+
+type ClubTab = "inscritos" | "no-inscritos";
+type PlayerTab = "pre" | "ins";
+
 const CampeonatoDetalle = ({
-  championshipId,
-  registration,
+  championship,
+  clubs,
+  registeredClubIds,
   players,
   onBack,
 }: DetailProps) => {
+  const [clubTab, setClubTab] = useState<ClubTab>("inscritos");
+  const [selectedClubId, setSelectedClubId] = useState<string | null>(
+    null
+  );
+  const [playerTab, setPlayerTab] = useState<PlayerTab>("pre");
+
   const [assignPlayer, setAssignPlayer] =
     useState<ChampionshipPlayer | null>(null);
   const [cardPlayer, setCardPlayer] =
     useState<ChampionshipPlayer | null>(null);
   const [jerseyNumber, setJerseyNumber] = useState("");
-  const [tab, setTab] = useState<DetailTab>("pre");
 
-  const championship = championships.find(
-    (c) => c.id === championshipId
+  const registeredSet = useMemo(
+    () => new Set(registeredClubIds),
+    [registeredClubIds]
   );
 
-  if (!championship) {
-    return (
-      <section className="space-y-4">
-        <Button variant="outline" onClick={onBack}>
-          Atras
-        </Button>
-        <div className="rounded-xl border border-slate-200 bg-white/80 p-4 text-sm text-slate-600">
-          No se encontro el campeonato.
+  const registeredClubs = useMemo(
+    () => clubs.filter((club) => registeredSet.has(club.id)),
+    [clubs, registeredSet]
+  );
+
+  const notRegisteredClubs = useMemo(
+    () => clubs.filter((club) => !registeredSet.has(club.id)),
+    [clubs, registeredSet]
+  );
+
+  const clubRows =
+    clubTab === "inscritos" ? registeredClubs : notRegisteredClubs;
+
+  const handleSelectClub = (clubId: string) => {
+    setSelectedClubId(clubId);
+    setPlayerTab("pre");
+  };
+
+  const clubColumns: TableColumn<Club>[] = [
+    {
+      key: "nombre",
+      label: "Club",
+      className: "w-[30%]",
+      render: (row) => (
+        <div className="font-semibold text-slate-800">
+          {row.nombre}
         </div>
-      </section>
+      ),
+    },
+    {
+      key: "municipio",
+      label: "Municipio",
+    },
+    {
+      key: "presidente",
+      label: "Presidente",
+    },
+    {
+      key: "telefono1",
+      label: "Contacto",
+    },
+    {
+      key: "id",
+      label: "Ver",
+      render: (row) => (
+        <Button
+          variant="info"
+          size="sm"
+          onClick={() => handleSelectClub(row.id)}
+        >
+          Ver
+        </Button>
+      ),
+    },
+  ];
+
+  if (selectedClubId) {
+    const club = clubs.find((row) => row.id === selectedClubId);
+    if (!club) {
+      return (
+        <section className="space-y-4">
+          <Button variant="outline" onClick={onBack}>
+            Atras
+          </Button>
+          <div className="rounded-xl border border-slate-200 bg-white/80 p-4 text-sm text-slate-600">
+            No se encontro el club.
+          </div>
+        </section>
+      );
+    }
+
+    const clubPlayers = players.filter(
+      (p) =>
+        p.championshipId === championship.id && p.club === club.nombre
     );
-  }
+    const pre = clubPlayers.filter((p) => p.stage === "preinscrito");
+    const ins = clubPlayers.filter((p) => p.stage === "inscrito");
 
-  const pre = players.filter((p) => p.stage === "preinscrito");
-  const ins = players.filter((p) => p.stage === "inscrito");
-
-  if (!registration) {
     return (
-      <section className="space-y-4">
-        <Button variant="outline" onClick={onBack}>
-          Atras
-        </Button>
-        <div className="rounded-xl border border-slate-200 bg-white/80 p-4 text-sm text-slate-600">
-          Este campeonato aun no tiene inscripcion registrada.
+      <section className="space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-xl font-semibold text-league-700">
+              {club.nombre}
+            </h1>
+            <p className="text-xs text-slate-500">
+              Inscripciones del torneo {championship.name}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setSelectedClubId(null)}
+            >
+              Volver a clubes
+            </Button>
+            <Button variant="outline" onClick={onBack}>
+              Atras
+            </Button>
+          </div>
         </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                Club
+              </div>
+              <div className="mt-2 text-2xl font-semibold text-slate-900">
+                {club.nombre}
+              </div>
+              <div className="mt-1 text-xs text-slate-500">
+                {club.municipio} · {club.barrio}
+              </div>
+            </div>
+            <StatusBadge
+              label={statusLabel[championship.status]}
+              tone={statusTone[championship.status]}
+            />
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                Presidente
+              </div>
+              <div className="mt-2 text-sm font-semibold text-slate-800">
+                {club.presidente}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                Contacto
+              </div>
+              <div className="mt-2 text-sm font-semibold text-slate-800">
+                {club.telefono1}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                Deportistas
+              </div>
+              <div className="mt-2 text-sm font-semibold text-slate-800">
+                {clubPlayers.length}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
+          <div className="space-y-3">
+            <div className="min-w-0 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
+              <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                  Navegacion
+                </div>
+
+                <div className="mt-3 flex flex-col gap-2">
+                  {[
+                    {
+                      id: "pre",
+                      label: "Deportistas Preinscritos",
+                      count: pre.length,
+                    },
+                    {
+                      id: "ins",
+                      label: "Deportistas Inscritos",
+                      count: ins.length,
+                    },
+                  ].map((item) => {
+                    const active = playerTab === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() =>
+                          setPlayerTab(item.id as PlayerTab)
+                        }
+                        className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                          active
+                            ? "bg-league-700 text-white shadow-md"
+                            : "bg-white text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs ${
+                            active
+                              ? "bg-white/20 text-white"
+                              : "bg-slate-100 text-slate-500"
+                          }`}
+                        >
+                          {item.count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
+            <div className="rounded-xl border border-slate-200 bg-white/80 p-4 space-y-4">
+              {playerTab === "pre" && (
+                <PlayersTable
+                  rows={pre}
+                  showActions={false}
+                  onAssign={() => {}}
+                  onView={() => {}}
+                />
+              )}
+
+              {playerTab === "ins" && (
+                <PlayersTable
+                  rows={ins}
+                  showActions
+                  onAssign={(player) => setAssignPlayer(player)}
+                  onView={(player) => setCardPlayer(player)}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <Modal
+          open={assignPlayer !== null}
+          title="Asignar Numero de Camiseta"
+          onClose={() => {
+            setAssignPlayer(null);
+            setJerseyNumber("");
+          }}
+        >
+          <div className="space-y-4 text-sm text-slate-700">
+            <div>
+              <label className="text-xs text-slate-500">
+                Deportista
+              </label>
+              <div className="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                {assignPlayer?.fullName}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-slate-500">
+                Numero de Camiseta
+              </label>
+              <input
+                value={jerseyNumber}
+                onChange={(e) => setJerseyNumber(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setAssignPlayer(null);
+                  setJerseyNumber("");
+                }}
+              >
+                Cerrar
+              </Button>
+              <Button>Asignar Numero</Button>
+            </div>
+          </div>
+        </Modal>
+
+        <Modal
+          open={cardPlayer !== null}
+          title={`Carnet ${cardPlayer?.documentNumber ?? ""}`}
+          onClose={() => setCardPlayer(null)}
+        >
+          {cardPlayer && (
+            <div className="flex justify-center">
+              <div className="w-full max-w-xs rounded-2xl border border-slate-200 bg-white shadow-card-soft">
+                <div className="h-16 rounded-t-2xl bg-league-sweep" />
+                <div className="-mt-10 flex justify-center">
+                  <PlayerAvatar
+                    name={cardPlayer.fullName}
+                    photoUrl={cardPlayer.photoUrl}
+                  />
+                </div>
+                <div className="px-6 pb-6 pt-4 text-center">
+                  <div className="text-sm font-semibold text-slate-800">
+                    {cardPlayer.fullName}
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    Deportista
+                  </div>
+                  <div className="mt-3 text-left text-xs text-slate-600 space-y-1">
+                    <div>
+                      <strong>Liga:</strong> Liga de Voleibol del
+                      Cesar
+                    </div>
+                    <div>
+                      <strong>Club:</strong> {cardPlayer.club}
+                    </div>
+                    <div>
+                      <strong>Categoria:</strong>{" "}
+                      {cardPlayer.category}
+                    </div>
+                    <div>
+                      <strong>Fecha de nacimiento:</strong>{" "}
+                      {cardPlayer.birthDate}
+                    </div>
+                  </div>
+                  <div className="mt-4 flex justify-center">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-slate-100 text-[10px] text-slate-400">
+                      QR
+                    </div>
+                  </div>
+                  <div className="mt-2 text-[10px] text-slate-500">
+                    FCV-{cardPlayer.documentNumber}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </Modal>
       </section>
     );
   }
 
   return (
     <section className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-league-700">
-          Inscripcion N. {registration.id.replace("reg-", "")}
-        </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-semibold text-league-700">
+            {championship.name}
+          </h1>
+          <p className="text-xs text-slate-500">
+            Clubes inscritos y no inscritos en este torneo.
+          </p>
+        </div>
         <Button variant="outline" onClick={onBack}>
           Atras
         </Button>
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-card-soft">
-        <h2 className="text-sm font-semibold text-slate-700">
-          Detalle Inscripcion
-        </h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 text-sm text-slate-700">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <strong>Presidente:</strong> {registration.president}
+            <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+              Torneo
+            </div>
+            <div className="mt-2 text-2xl font-semibold text-slate-900">
+              {championship.name}
+            </div>
+            <div className="mt-1 text-xs text-slate-500">
+              {championship.category} · {championship.city}
+            </div>
           </div>
-          <div>
-            <strong>Secretario:</strong> {registration.secretary}
-          </div>
-          <div>
-            <strong>Delegado:</strong> {registration.delegate}
-          </div>
-          <div>
-            <strong>Entrenador:</strong> {registration.coach}
-          </div>
-          <div>
-            <strong>Asistente Tecnico:</strong>{" "}
-            {registration.assistantCoach}
-          </div>
-          <div>
-            <strong>Medico:</strong> {registration.doctor}
-          </div>
-          <div>
-            <strong>Preparador Fisico:</strong>{" "}
-            {registration.physicalTrainer}
-          </div>
+          <StatusBadge
+            label={statusLabel[championship.status]}
+            tone={statusTone[championship.status]}
+          />
         </div>
 
-        <div className="mt-6 border-t border-slate-100 pt-4">
-          <h2 className="text-sm font-semibold text-slate-700">
-            Detalle Campeonato
-          </h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 text-sm text-slate-700">
-            <div>
-              <strong>Nombre:</strong> {championship.name}
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+              Fechas
             </div>
-            <div>
-              <strong>Categoria:</strong> {championship.category}
+            <div className="mt-2 text-sm font-semibold text-slate-800">
+              {championship.startDate} / {championship.endDate}
             </div>
-            <div>
-              <strong>Municipio:</strong> {championship.city}
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+              Clubes inscritos
             </div>
-            <div>
-              <strong>Fecha inicio:</strong> {championship.startDate}
+            <div className="mt-2 text-sm font-semibold text-slate-800">
+              {registeredClubs.length}
             </div>
-            <div>
-              <strong>Fecha fin:</strong> {championship.endDate}
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+              Clubes no inscritos
+            </div>
+            <div className="mt-2 text-sm font-semibold text-slate-800">
+              {notRegisteredClubs.length}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
-        {/* Sub-nav */}
+      <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
         <div className="space-y-3">
           <div className="min-w-0 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
             <div className="rounded-xl border border-slate-200 bg-white/80 p-4">
               <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                Navegacion
+                Estados
               </div>
 
-              {/* Mobile select */}
-              <div className="mt-3 lg:hidden">
-                <select
-                  value={tab}
-                  onChange={(e) =>
-                    setTab(e.target.value as DetailTab)
-                  }
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
-                >
-                  <option value="pre">
-                    Deportistas Preinscritos ({pre.length})
-                  </option>
-                  <option value="ins">
-                    Deportistas Inscritos ({ins.length})
-                  </option>
-                </select>
-              </div>
-
-              {/* Desktop nav */}
-              <div className="mt-3 hidden lg:flex lg:flex-col gap-2">
+              <div className="mt-3 flex flex-col gap-2">
                 {[
                   {
-                    id: "pre",
-                    label: "Deportistas Preinscritos",
-                    count: pre.length,
+                    id: "inscritos",
+                    label: "Clubes inscritos",
+                    count: registeredClubs.length,
                   },
                   {
-                    id: "ins",
-                    label: "Deportistas Inscritos",
-                    count: ins.length,
+                    id: "no-inscritos",
+                    label: "Clubes no inscritos",
+                    count: notRegisteredClubs.length,
                   },
                 ].map((item) => {
-                  const active = tab === item.id;
+                  const active = clubTab === item.id;
                   return (
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => setTab(item.id as DetailTab)}
-                      className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                      onClick={() => setClubTab(item.id as ClubTab)}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
                         active
                           ? "bg-league-700 text-white shadow-md"
                           : "bg-white text-slate-600 hover:bg-slate-50"
@@ -199,122 +500,49 @@ const CampeonatoDetalle = ({
           </div>
         </div>
 
-        {/* Panel */}
         <div className="rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-card-soft">
           <div className="rounded-xl border border-slate-200 bg-white/80 p-4 space-y-4">
-            {tab === "pre" && (
-              <PlayersTable
-                rows={pre}
-                showActions={false}
-                onAssign={() => {}}
-                onView={() => {}}
+            <div className="hidden md:block">
+              <Table
+                columns={clubColumns}
+                data={clubRows}
+                emptyMessage="No hay clubes para este estado"
               />
-            )}
+            </div>
 
-            {tab === "ins" && (
-              <PlayersTable
-                rows={ins}
-                showActions
-                onAssign={(player) => setAssignPlayer(player)}
-                onView={(player) => setCardPlayer(player)}
-              />
-            )}
+            <div className="md:hidden space-y-3">
+              {clubRows.length === 0 ? (
+                <div className="rounded-xl border border-slate-200 bg-white/80 p-4 text-xs text-slate-500">
+                  No hay clubes para este estado
+                </div>
+              ) : (
+                clubRows.map((row) => (
+                  <div
+                    key={row.id}
+                    className="rounded-xl border border-slate-200 bg-white/80 p-4 shadow-card-soft"
+                  >
+                    <div className="text-sm font-semibold text-slate-800">
+                      {row.nombre}
+                    </div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      {row.municipio} · {row.presidente}
+                    </div>
+                    <div className="mt-3">
+                      <Button
+                        variant="info"
+                        size="sm"
+                        onClick={() => handleSelectClub(row.id)}
+                      >
+                        Ver
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
-
-      <Modal
-        open={assignPlayer !== null}
-        title="Asignar Numero de Camiseta"
-        onClose={() => {
-          setAssignPlayer(null);
-          setJerseyNumber("");
-        }}
-      >
-        <div className="space-y-4 text-sm text-slate-700">
-          <div>
-            <label className="text-xs text-slate-500">
-              Deportista
-            </label>
-            <div className="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-              {assignPlayer?.fullName}
-            </div>
-          </div>
-          <div>
-            <label className="text-xs text-slate-500">
-              Numero de Camiseta
-            </label>
-            <input
-              value={jerseyNumber}
-              onChange={(e) => setJerseyNumber(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-            />
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setAssignPlayer(null);
-                setJerseyNumber("");
-              }}
-            >
-              Cerrar
-            </Button>
-            <Button>Asignar Numero</Button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        open={cardPlayer !== null}
-        title={`Carnet ${cardPlayer?.documentNumber ?? ""}`}
-        onClose={() => setCardPlayer(null)}
-      >
-        {cardPlayer && (
-          <div className="flex justify-center">
-            <div className="w-full max-w-xs rounded-2xl border border-slate-200 bg-white shadow-card-soft">
-              <div className="h-16 rounded-t-2xl bg-league-sweep" />
-              <div className="-mt-10 flex justify-center">
-                <PlayerAvatar
-                  name={cardPlayer.fullName}
-                  photoUrl={cardPlayer.photoUrl}
-                />
-              </div>
-              <div className="px-6 pb-6 pt-4 text-center">
-                <div className="text-sm font-semibold text-slate-800">
-                  {cardPlayer.fullName}
-                </div>
-                <div className="text-xs text-slate-500">
-                  Deportista
-                </div>
-                <div className="mt-3 text-left text-xs text-slate-600 space-y-1">
-                  <div>
-                    <strong>Liga:</strong> Liga de Voleibol del Cesar
-                  </div>
-                  <div>
-                    <strong>Club:</strong> {cardPlayer.club}
-                  </div>
-                  <div>
-                    <strong>Categoria:</strong> {cardPlayer.category}
-                  </div>
-                  <div>
-                    <strong>Fecha de nacimiento:</strong>{" "}
-                    {cardPlayer.birthDate}
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-slate-100 text-[10px] text-slate-400">
-                    QR
-                  </div>
-                </div>
-                <div className="mt-2 text-[10px] text-slate-500">
-                  FCV-{cardPlayer.documentNumber}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
     </section>
   );
 };
