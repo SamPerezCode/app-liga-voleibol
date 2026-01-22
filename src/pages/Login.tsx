@@ -245,8 +245,8 @@ const Login = () => {
       >
         <div className="mx-auto max-w-md space-y-3">
           <p className="text-sm leading-relaxed text-slate-500">
-            Tu usuario tiene varios roles. Elige con cual deseas
-            ingresar a la aplicación.
+            El usuario al que intentas ingresar tiene varios roles.
+            Elige con cuál deseas ingresar a la aplicación.
           </p>
 
           <div className="inline-flex w-full items-center gap-1 rounded-full bg-slate-100 p-1">
