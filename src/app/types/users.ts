@@ -13,7 +13,8 @@ export type User = {
   username: string;
   nombre: string;
   email: string;
-  telefono: string; // Telefono 1
+  telefono: string;
   role: UserRole;
+  roles?: UserRole[];
   status: UserStatus;
 };

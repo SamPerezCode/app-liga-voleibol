@@ -23,6 +23,11 @@ export const authUsers: AuthUser[] = [
     password: "club123",
     userId: "u-club-01",
   },
+  {
+    username: "rol.demo",
+    password: "demo123",
+    userId: "u-shared-01",
+  },
 ];
 
 export const authenticate = (

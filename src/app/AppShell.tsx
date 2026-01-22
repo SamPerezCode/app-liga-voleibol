@@ -18,14 +18,35 @@ const AppShell = () => {
       ? localStorage.getItem("auth:userId")
       : null;
 
-  const currentUser =
+  const storedRole =
+    typeof window !== "undefined"
+      ? (localStorage.getItem("auth:role") as
+          | "admin"
+          | "liga"
+          | "club"
+          | "deportista"
+          | "entrenador"
+          | "arbitro"
+          | null)
+      : null;
+
+  const baseUser =
     users.find((u) => u.id === storedId) ??
     users.find((u) => u.role === "admin")!;
+
+  const resolvedRole =
+    storedRole && baseUser.roles?.includes(storedRole)
+      ? storedRole
+      : baseUser.role;
+
+  const currentUser = { ...baseUser, role: resolvedRole };
 
   const handleProfile = () => setActiveSection("Perfil");
 
   const handleLogout = () => {
     localStorage.removeItem("auth:userId");
+    localStorage.removeItem("auth:role");
+
     window.location.assign("/login");
   };
 
@@ -37,13 +58,6 @@ const AppShell = () => {
         activeItem={activeSection}
         onSelect={setActiveSection}
       />
-      {/* {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 hidden lg:block bg-transparent"
-          onClick={() => setSidebarOpen(false)}
-          aria-hidden="true"
-        />
-      )} */}
 
       <MobileSidebar
         open={mobileOpen}

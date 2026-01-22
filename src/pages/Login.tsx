@@ -1,11 +1,44 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { authenticate } from "../app/mocks/auth";
+import type { User, UserRole } from "../app/types/users";
+import Modal from "../ui/Modal";
+
+const roleLabels: Record<UserRole, string> = {
+  admin: "Admin",
+  liga: "Liga",
+  club: "Club",
+  deportista: "Deportista",
+  entrenador: "Entrenador",
+  arbitro: "Arbitro",
+};
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [pendingUser, setPendingUser] = useState<User | null>(null);
+  const [selectedRole, setSelectedRole] = useState<UserRole | "">("");
+
+  const availableRoles = pendingUser?.roles?.length
+    ? pendingUser.roles
+    : pendingUser
+      ? [pendingUser.role]
+      : [];
+
+  const closeRoleModal = () => {
+    setPendingUser(null);
+    setSelectedRole("");
+  };
+
+  const confirmRole = () => {
+    if (!pendingUser || !selectedRole) return;
+    localStorage.setItem("auth:userId", pendingUser.id);
+    localStorage.setItem("auth:role", selectedRole);
+    setError("");
+    closeRoleModal();
+    window.location.assign("/");
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -14,7 +47,17 @@ const Login = () => {
       setError("Usuario o contrasena invalida.");
       return;
     }
+
+    const roles = user.roles?.length ? user.roles : [user.role];
+    if (roles.length > 1) {
+      setPendingUser(user);
+      setSelectedRole("");
+      setError("");
+      return;
+    }
+
     localStorage.setItem("auth:userId", user.id);
+    localStorage.setItem("auth:role", roles[0]);
     setError("");
     window.location.assign("/");
   };
@@ -193,6 +236,58 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        open={pendingUser !== null}
+        title="Selecciona el rol de ingreso"
+        onClose={closeRoleModal}
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-slate-500">
+            Tu usuario tiene varios roles. Elige con cual deseas
+            ingresar al dashboard.
+          </p>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            {availableRoles.map((role) => (
+              <button
+                key={role}
+                type="button"
+                onClick={() => setSelectedRole(role)}
+                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+                  selectedRole === role
+                    ? "border-league-600 bg-league-600 text-white shadow-sm"
+                    : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                {roleLabels[role]}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <button
+              type="button"
+              onClick={closeRoleModal}
+              className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              onClick={confirmRole}
+              disabled={!selectedRole}
+              className={`rounded-xl px-4 py-2 text-sm font-semibold text-white transition ${
+                selectedRole
+                  ? "bg-league-600 hover:bg-league-700"
+                  : "cursor-not-allowed bg-slate-300"
+              }`}
+            >
+              Ingresar
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

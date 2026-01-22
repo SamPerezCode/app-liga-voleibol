@@ -73,4 +73,15 @@ export const users: User[] = [
     role: "arbitro",
     status: "activo",
   },
+
+  {
+    id: "u-shared-01",
+    username: "rol.demo",
+    nombre: "Samuel Rojas",
+    email: "rol.demo@voleicesar.com",
+    telefono: "3001112233",
+    role: "deportista",
+    roles: ["deportista", "entrenador"],
+    status: "activo",
+  },
 ];
