@@ -13,17 +13,37 @@ const fileClass =
   "file:mr-3 file:rounded-md file:border-0 file:bg-slate-200 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-slate-600";
 
 const departmentOptions = [
-  "CESAR",
-  "ATLÁNTICO",
-  "BOLÍVAR",
-  "MAGDALENA",
-  "LA GUAJIRA",
-  "NORTE DE SANTANDER",
-  "SANTANDER",
-  "ANTIOQUIA",
-  "CUNDINAMARCA",
-  "BOYACÁ",
-  "VALLE DEL CAUCA",
+  "Antioquia",
+  "Arauca",
+  "Atlántico",
+  "Bolívar",
+  "Boyacá",
+  "Caldas",
+  "Caquetá",
+  "Casanare",
+  "Cauca",
+  "Cesar",
+  "Chocó",
+  "Córdoba",
+  "Cundinamarca",
+  "Guainía",
+  "Guaviare",
+  "Huila",
+  "La Guajira",
+  "Magdalena",
+  "Meta",
+  "Nariño",
+  "Norte de Santander",
+  "Putumayo",
+  "Quindío",
+  "Risaralda",
+  "San Andrés y Providencia",
+  "Santander",
+  "Sucre",
+  "Tolima",
+  "Valle del Cauca",
+  "Vaupés",
+  "Vichada",
 ];
 
 const countryOptions = [
@@ -55,13 +75,13 @@ const documentOptions = [
 
 const DeportistaForm = ({ formRef }: Props) => {
   const [nationality, setNationality] = useState("colombiano");
-  const [birthDepartment, setBirthDepartment] = useState("CESAR");
+  const [birthDepartment, setBirthDepartment] = useState("Cesar");
   const [residenceDepartment, setResidenceDepartment] =
-    useState("CESAR");
+    useState("Cesar");
 
   const isForeign = nationality === "extranjero";
-  const birthInCesar = birthDepartment === "CESAR";
-  const residenceInCesar = residenceDepartment === "CESAR";
+  const birthInCesar = birthDepartment === "Cesar";
+  const residenceInCesar = residenceDepartment === "Cesar";
 
   return (
     <form ref={formRef} className="space-y-6">
@@ -128,6 +148,7 @@ const DeportistaForm = ({ formRef }: Props) => {
               <Select
                 value={birthDepartment}
                 onChange={(e) => setBirthDepartment(e.target.value)}
+                className="max-h-56 overflow-y-auto"
               >
                 {departmentOptions.map((dep) => (
                   <option key={dep}>{dep}</option>
@@ -161,6 +182,7 @@ const DeportistaForm = ({ formRef }: Props) => {
           <Select
             value={residenceDepartment}
             onChange={(e) => setResidenceDepartment(e.target.value)}
+            className="max-h-56 overflow-y-auto"
           >
             {departmentOptions.map((dep) => (
               <option key={dep}>{dep}</option>
