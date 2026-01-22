@@ -171,6 +171,40 @@ export const athleteRegistrations: AthleteRegistration[] = [
       },
     },
   },
+  {
+    userId: "u-shared-01",
+    fotoUrl: "/athlete-4.jpg",
+    birthDate: "2002-08-14",
+    birthDept: "CESAR",
+    birthCity: "Valledupar",
+    residenceDept: "CESAR",
+    residenceCity: "Valledupar",
+    neighborhood: "La Nevada",
+    address: "Diagonal 9 No 20-11",
+    heightCm: 180,
+    weightKg: 74,
+    bloodType: "O+",
+    gender: "Masculino",
+    clubDepartamento: "CESAR",
+    clubId: "u-club-01",
+    position: "Armador",
+    documentType: "Cedula de ciudadania",
+    documentNumber: "1011223344",
+    documentos: {
+      identidad: {
+        name: "identidad.pdf",
+        url: "/docs/ath-04-identidad.pdf",
+      },
+      registroCivil: {
+        name: "registro.pdf",
+        url: "/docs/ath-04-registro.pdf",
+      },
+      certificadoEps: {
+        name: "eps.pdf",
+        url: "/docs/ath-04-eps.pdf",
+      },
+    },
+  },
 ];
 
 export const coachRegistrations: CoachRegistration[] = [
@@ -204,6 +238,42 @@ export const coachRegistrations: CoachRegistration[] = [
           url: "/docs/coach-curso-nacional.pdf",
         },
         resolucionCategoria: "Res 5521",
+      },
+    },
+  },
+  {
+    userId: "u-shared-01",
+    ligaId: "u-liga-01",
+    clubId: "u-club-01",
+    fotoUrl: "/coach-3.jpg",
+    departamento: "CESAR",
+    municipio: "Valledupar",
+    barrio: "La Nevada",
+    direccion: "Diagonal 9 No 20-11",
+    documentType: "Cedula de ciudadania",
+    documentNumber: "1011223344",
+    documentos: {
+      identidad: {
+        name: "identidad.pdf",
+        url: "/docs/coach-03-identidad.pdf",
+      },
+      carnetEntrenador: {
+        file: {
+          name: "carnet.pdf",
+          url: "/docs/coach-03-carnet.pdf",
+        },
+        resolucionCategoria: "Categoria A",
+      },
+      hojaDeVida: {
+        name: "hoja-vida.pdf",
+        url: "/docs/coach-03-hv.pdf",
+      },
+      certificadoCursoNacional: {
+        file: {
+          name: "curso-nacional.pdf",
+          url: "/docs/coach-03-curso-nacional.pdf",
+        },
+        resolucionCategoria: "Res 8891",
       },
     },
   },
