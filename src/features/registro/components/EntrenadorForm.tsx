@@ -4,10 +4,13 @@ import Input from "../../../ui/Input";
 import Select from "../../../ui/Select";
 import Button from "../../../ui/Button";
 import TermsAndConditions from "../../../ui/TermsAndConditions";
+import Modal from "../../../ui/Modal";
 
 type Props = {
   formRef: RefObject<HTMLFormElement | null>;
 };
+
+type SubmitStatus = "idle" | "sending" | "success";
 
 const fileClass =
   "file:mr-3 file:rounded-md file:border-0 file:bg-slate-200 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-slate-600";
@@ -69,12 +72,31 @@ const EntrenadorForm = ({ formRef }: Props) => {
   const [nationality, setNationality] = useState("colombiano");
   const [residenceDepartment, setResidenceDepartment] =
     useState("Cesar");
+  const [submitStatus, setSubmitStatus] =
+    useState<SubmitStatus>("idle");
+
+  const resetForm = () => {
+    formRef.current?.reset();
+  };
+
+  const closeModal = () => {
+    setSubmitStatus("idle");
+    resetForm();
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setSubmitStatus("sending");
+    window.setTimeout(() => {
+      setSubmitStatus("success");
+    }, 1300);
+  };
 
   const isForeign = nationality === "extranjero";
   const residenceInCesar = residenceDepartment === "Cesar";
 
   return (
-    <form ref={formRef} className="space-y-6">
+    <form ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
       <div>
         <h3 className="text-sm font-semibold text-slate-700">
           Registro de Entrenadores
@@ -87,13 +109,19 @@ const EntrenadorForm = ({ formRef }: Props) => {
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <label className="text-xs text-slate-500">Foto</label>
-          <Input type="file" className={fileClass} />
+          <Input type="file" className={fileClass} required />
         </div>
         <div>
           <label className="text-xs text-slate-500">
             Nombre completo
           </label>
-          <Input />
+          <Input required />
+        </div>
+        <div>
+          <label className="text-xs text-slate-500">
+            Fecha de nacimiento
+          </label>
+          <Input type="date" required />
         </div>
 
         <div>
@@ -103,6 +131,7 @@ const EntrenadorForm = ({ formRef }: Props) => {
           <Select
             value={nationality}
             onChange={(e) => setNationality(e.target.value)}
+            required
           >
             <option value="colombiano">Colombiano</option>
             <option value="extranjero">Extranjero</option>
@@ -113,7 +142,7 @@ const EntrenadorForm = ({ formRef }: Props) => {
             <label className="text-xs text-slate-500">
               País de nacionalidad
             </label>
-            <Select defaultValue="">
+            <Select defaultValue="" required>
               <option value="" disabled>
                 Seleccione una opción
               </option>
@@ -131,6 +160,7 @@ const EntrenadorForm = ({ formRef }: Props) => {
               value={residenceDepartment}
               onChange={(e) => setResidenceDepartment(e.target.value)}
               className="max-h-56 overflow-y-auto"
+              required
             >
               {departmentOptions.map((dep) => (
                 <option key={dep}>{dep}</option>
@@ -147,6 +177,7 @@ const EntrenadorForm = ({ formRef }: Props) => {
             value={residenceDepartment}
             onChange={(e) => setResidenceDepartment(e.target.value)}
             className="max-h-56 overflow-y-auto"
+            required
           >
             {departmentOptions.map((dep) => (
               <option key={dep}>{dep}</option>
@@ -158,7 +189,7 @@ const EntrenadorForm = ({ formRef }: Props) => {
             Municipio de residencia
           </label>
           {residenceInCesar ? (
-            <Select defaultValue="">
+            <Select defaultValue="" required>
               <option value="" disabled>
                 Seleccione una opción
               </option>
@@ -167,7 +198,7 @@ const EntrenadorForm = ({ formRef }: Props) => {
               ))}
             </Select>
           ) : (
-            <Input placeholder="Municipio de residencia" />
+            <Input placeholder="Municipio de residencia" required />
           )}
         </div>
 
@@ -175,16 +206,16 @@ const EntrenadorForm = ({ formRef }: Props) => {
           <label className="text-xs text-slate-500">
             Barrio / Conjunto
           </label>
-          <Input />
+          <Input required />
         </div>
         <div>
           <label className="text-xs text-slate-500">Dirección</label>
-          <Input />
+          <Input required />
         </div>
 
         <div>
           <label className="text-xs text-slate-500">Club</label>
-          <Select defaultValue="">
+          <Select defaultValue="" required>
             <option value="" disabled>
               Seleccione una opción
             </option>
@@ -194,13 +225,13 @@ const EntrenadorForm = ({ formRef }: Props) => {
 
         <div>
           <label className="text-xs text-slate-500">Teléfono</label>
-          <Input />
+          <Input required />
         </div>
         <div>
           <label className="text-xs text-slate-500">
             Tipo de documento
           </label>
-          <Select defaultValue="">
+          <Select defaultValue="" required>
             <option value="" disabled>
               Seleccione una opción
             </option>
@@ -214,18 +245,13 @@ const EntrenadorForm = ({ formRef }: Props) => {
           <label className="text-xs text-slate-500">
             Número de documento
           </label>
-          <Input />
+          <Input required />
         </div>
         <div>
           <label className="text-xs text-slate-500">
             Correo electrónico
           </label>
-          <Input />
-        </div>
-
-        <div>
-          <label className="text-xs text-slate-500">Contraseña</label>
-          <Input type="password" />
+          <Input required />
         </div>
       </div>
 
@@ -238,11 +264,11 @@ const EntrenadorForm = ({ formRef }: Props) => {
             <label className="text-xs text-slate-500">
               Documento identidad
             </label>
-            <Input type="file" className={fileClass} />
+            <Input type="file" className={fileClass} required />
           </div>
           <div>
             <label className="text-xs text-slate-500">
-              Carnet entrenador
+              Carnet entrenador (Opcional)
             </label>
             <Input type="file" className={fileClass} />
           </div>
@@ -274,6 +300,28 @@ const EntrenadorForm = ({ formRef }: Props) => {
       <div className="flex justify-end">
         <Button type="submit">Registrarse</Button>
       </div>
+
+      <Modal
+        open={submitStatus !== "idle"}
+        title="Registro de deportista"
+        onClose={closeModal}
+      >
+        {submitStatus === "sending" ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-6 text-sm text-slate-600">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-league-600" />
+            <div>Enviando registro...</div>
+          </div>
+        ) : (
+          <div className="space-y-4 text-sm text-slate-600">
+            <div>Se guardo su registro.</div>
+            <div className="flex justify-end">
+              <Button variant="outline" onClick={closeModal}>
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </form>
   );
 };
