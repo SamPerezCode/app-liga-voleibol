@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { authenticate } from "../app/mocks/auth";
 import type { User, UserRole } from "../app/types/users";
 import Modal from "../ui/Modal";
+import Button from "../ui/Button";
 
 const roleLabels: Record<UserRole, string> = {
   admin: "Admin",
@@ -242,22 +243,22 @@ const Login = () => {
         title="Selecciona el rol de ingreso"
         onClose={closeRoleModal}
       >
-        <div className="space-y-4">
-          <p className="text-sm text-slate-500">
+        <div className="mx-auto max-w-md space-y-3">
+          <p className="text-sm leading-relaxed text-slate-500">
             Tu usuario tiene varios roles. Elige con cual deseas
             ingresar a la aplicación.
           </p>
 
-          <div className="grid gap-2 sm:grid-cols-2">
+          <div className="inline-flex w-full items-center gap-1 rounded-full bg-slate-100 p-1">
             {availableRoles.map((role) => (
               <button
                 key={role}
                 type="button"
                 onClick={() => setSelectedRole(role)}
-                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+                className={`flex-1 rounded-full px-4 py-2 text-sm font-semibold transition ${
                   selectedRole === role
-                    ? "border-league-600 bg-league-600 text-white shadow-sm"
-                    : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                    ? "bg-white text-league-700 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 {roleLabels[role]}
@@ -265,26 +266,26 @@ const Login = () => {
             ))}
           </div>
 
-          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <button
+          <div className="flex items-center justify-end gap-2 pt-1">
+            <Button
               type="button"
               onClick={closeRoleModal}
-              className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+              variant="ghost"
+              size="sm"
+              className="rounded-full"
             >
               Cancelar
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={confirmRole}
               disabled={!selectedRole}
-              className={`rounded-xl px-4 py-2 text-sm font-semibold text-white transition ${
-                selectedRole
-                  ? "bg-league-600 hover:bg-league-700"
-                  : "cursor-not-allowed bg-slate-300"
-              }`}
+              variant="primary"
+              size="sm"
+              className="rounded-full px-5 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Ingresar
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>
