@@ -245,7 +245,7 @@ const Login = () => {
         <div className="space-y-4">
           <p className="text-sm text-slate-500">
             Tu usuario tiene varios roles. Elige con cual deseas
-            ingresar al dashboard.
+            ingresar a la aplicación.
           </p>
 
           <div className="grid gap-2 sm:grid-cols-2">
